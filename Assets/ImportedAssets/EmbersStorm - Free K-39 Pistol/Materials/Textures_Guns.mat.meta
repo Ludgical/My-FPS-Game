@@ -1,7 +1,8 @@
 fileFormatVersion: 2
-guid: cd976b636adfaeb4988ea2a014ea2581
-PrefabImporter:
+guid: 8d327dedffa514b46b4504b441ca4a5a
+NativeFormatImporter:
   externalObjects: {}
+  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -10,5 +11,5 @@ AssetOrigin:
   productId: 370958
   packageName: EmbersStorm - Free K-39 Pistol
   packageVersion: 1.0
-  assetPath: Assets/ImportedAssets/K-39.prefab
+  assetPath: Assets/EmbersStorm - Free K-39 Pistol/Materials/Textures_Guns.mat
   uploadId: 893014

@@ -23,7 +23,7 @@ public class PlayerScript : MonoBehaviour
     private bool isCrouched;
     private bool runAnimationIsOn;
     private float cameraXRotation;
-    private float cameraYRotation;
+    private float playerYRotation;
     
     private void Start()
     {
@@ -43,6 +43,12 @@ public class PlayerScript : MonoBehaviour
     
     private void FixedUpdate()
     {
+        //Move to when the fov slider changes (temporary)
+        // SetFOV(logic.fov);
+        
+        if (!logic.gameIsOn)
+            return;
+        
         //Crouch and stand up
         Crouch();
         //Move forward, backward, left, right and jump
@@ -51,13 +57,14 @@ public class PlayerScript : MonoBehaviour
         SetRunAnimation();
         //Gravity with scale
         Gravity();
-        
-        //Move to when the fov slider changes (temporary)
-        SetFOV(logic.fov);
     }
     
     private void Update()
     {
+        if (!logic.gameIsOn)
+            return;
+        
+        //Look around with the mouse
         Look();
     }
     
@@ -96,10 +103,8 @@ public class PlayerScript : MonoBehaviour
 
     private void Move()
     {
-        //moveInput is a Vector2, so I use .x and .y
-        //movement is a Vector3, so I use .x and .z
-        //movement is a vector in world space
-        var movement = camera.transform.forward * moveInput.y + camera.transform.right * moveInput.x;
+        //Get a movement vector from the direction the player is facing and the move input
+        var movement = transform.forward * moveInput.y + transform.right * moveInput.x;
         
         //Use lerp functions to keep accelerating until a max speed
         var maxMoveSpeed = isCrouched ? logic.maxCrouchSpeed : logic.maxRunSpeed;
@@ -131,15 +136,14 @@ public class PlayerScript : MonoBehaviour
         var mouseX = lookInput.x * realSensitivity;
         var mouseY = lookInput.y * realSensitivity;
         
-        //Rotate the camera locally
-        //up/down
+        //Rotate the camera up and down locally
         cameraXRotation -= mouseY;
         cameraXRotation = Mathf.Clamp(cameraXRotation, -90, 90);
+        camera.transform.localRotation = Quaternion.Euler(cameraXRotation, 0, 0);
         
-        //left/right
-        cameraYRotation += mouseX;
-        
-        camera.transform.localRotation = Quaternion.Euler(cameraXRotation, cameraYRotation, 0);
+        //Rotate the player right and left
+        playerYRotation += mouseX;
+        transform.rotation = Quaternion.Euler(0, playerYRotation, 0);
     }
 
     private void SetRunAnimation()
@@ -179,8 +183,7 @@ public class PlayerScript : MonoBehaviour
     public void OnShoot(InputAction.CallbackContext context)
     {
         if (context.performed)
-            //Temporary
-            door.OpenDoor();
+            Debug.Log("Pew!");
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -204,5 +207,16 @@ public class PlayerScript : MonoBehaviour
             else if (context.canceled)
                 shouldBeCrouched = false;
         }
+    }
+    
+    //-----
+    //Other
+    //-----
+
+    public void ResetPlayer()
+    {
+        rb.position = new Vector3(0, 0, -6);
+        transform.position = new Vector3(0, 0, -6);
+        camera.transform.rotation = Quaternion.identity;
     }
 }

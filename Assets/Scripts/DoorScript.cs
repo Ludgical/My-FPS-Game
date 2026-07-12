@@ -39,7 +39,7 @@ public class DoorScript : MonoBehaviour
         var currentOffset = offset;
         
         //While the door isn't fully open
-        while (offset.magnitude * 3 > currentOffset.magnitude)
+        while (offset.magnitude * 3 - 0.01 > currentOffset.magnitude)
         {
             //Move the sides of the door closer to their goals
             doorLeft.transform.position = 
@@ -56,5 +56,10 @@ public class DoorScript : MonoBehaviour
         //Put the sides exactly where they're supposed to be
         doorLeft.transform.position = doorLeftGoal;
         doorRight.transform.position = doorRightGoal;
+    }
+
+    public void CloseDoor()
+    {
+        
     }
 }
