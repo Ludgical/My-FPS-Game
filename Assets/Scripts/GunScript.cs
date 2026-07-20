@@ -21,6 +21,17 @@ public class GunScript : MonoBehaviour
         refs = References.Refs;
         gunPivot = refs.gunPivot;
         delayedFollowPivot = refs.delayedFollowPivot;
+        
+        gameObject.SetActive(false);
+        
+        refs.gameLogic.onPlay += () =>
+        {
+            gameObject.SetActive(true);
+        };
+        refs.gameLogic.onCompleted += () =>
+        {
+            gameObject.SetActive(false);
+        };
     }
 
     private void Update()

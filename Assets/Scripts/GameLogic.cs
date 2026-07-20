@@ -1,57 +1,50 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameLogic : MonoBehaviour
 {
-    private References refs;
+    public Action onPlay;
+    public Action onCompleted;
     
-    [SerializeField] private DoorScript startRoomDoor;
-    [SerializeField] private MusicScript musicScript;
+    [SerializeField] private Button timedButton;
+    [SerializeField] private Button tutorialButton;
 
     public bool gameIsOn;
 
     private void Start()
     {
-        refs = References.Refs;
-    }
-
-    public void OnPlayTimed()
-    {
-        OnPlay();
-    }
-
-    public void OnPlayTutorial()
-    {
-        OnPlay();
-    }
-
-    private void OnPlay()
-    {
-        gameIsOn = true;
-        Settings.Save();
-        startRoomDoor.OpenDoor(1.2f);
-        refs.startUI.SetActive(false);
-        refs.gunObject.SetActive(true);
-        musicScript.StopMusic();
+        timedButton.onClick.AddListener(() =>
+        {
+            onPlay.Invoke();
+        });
+        tutorialButton.onClick.AddListener(() =>
+        {
+            onPlay.Invoke();
+        });
         
-        //Hide cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        onPlay += () =>
+        {
+            gameIsOn = true;
+            Settings.Save();
+            
+            //Hide cursor
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        };
+        onCompleted += () =>
+        {
+            gameIsOn = false;
+            
+            //Show cursor
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        };
     }
     
     [ContextMenu("completed")]
     private void OnGameCompleted()
     {
-        gameIsOn = false;
-        startRoomDoor.CloseDoor();
-        refs.startUI.SetActive(true);
-        refs.gunObject.SetActive(false);
-        musicScript.StartMusic();
-        
-        //Teleport player to the start
-        refs.player.ResetPlayer();
-        
-        //Show cursor
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        onCompleted.Invoke();
     }
 }

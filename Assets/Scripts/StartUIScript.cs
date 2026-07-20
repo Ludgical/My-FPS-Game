@@ -30,6 +30,10 @@ public class StartUIScript : MonoBehaviour
         SetToggleCrouchText();
         volumeSlider.value = Settings.Game.Volume;
         OnChangeVolume();
+        
+        //Show on game start and hide on game completed
+        refs.gameLogic.onPlay += () => gameObject.SetActive(false);;
+        refs.gameLogic.onCompleted += () => gameObject.SetActive(true);;
     }
     
     public void OnChangeSens()

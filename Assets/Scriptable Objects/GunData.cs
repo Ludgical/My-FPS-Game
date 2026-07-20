@@ -11,7 +11,7 @@ namespace Scriptable_Objects
         public float rotationOffsetMultiplier;
         [Tooltip("Smooth time when the gun goes to its goal offset, lower = faster")]
         public float positionOffsetSmoothTime;
-        [Tooltip("How quickly should the rotation offset reach its goal offset?")]
+        [Tooltip("How quickly should the rotation offset reach its goal offset?, higher = faster")]
         public float rotationOffsetSpeed;
         [Tooltip("Cooldown between shots")]
         public float cooldown;

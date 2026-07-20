@@ -24,6 +24,8 @@ public class PlayerScript : MonoBehaviour
     private void Start()
     {
         refs = References.Refs;
+
+        refs.gameLogic.onCompleted += ResetPlayer;
     }
 
     private void FixedUpdate()
@@ -120,7 +122,7 @@ public class PlayerScript : MonoBehaviour
             return;
         
         //Get how much up/down and left/right the mouse moved
-        var realSensitivity = Settings.Player.Sensitivity / 250;
+        var realSensitivity = Settings.Player.Sensitivity / 350;
         var mouseX = lookInput.x * realSensitivity;
         var mouseY = lookInput.y * realSensitivity;
         

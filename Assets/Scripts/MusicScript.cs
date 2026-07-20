@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class MusicScript : MonoBehaviour
 {
+    private References refs;
+    
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip backgroundMusic;
     
@@ -10,10 +12,15 @@ public class MusicScript : MonoBehaviour
     
     private void Start()
     {
+        refs = References.Refs;
+        
         StartMusic();
+        
+        refs.gameLogic.onPlay += StopMusic;
+        refs.gameLogic.onCompleted += StartMusic;
     }
 
-    public void StartMusic()
+    private void StartMusic()
     {
         //Stop the previous routine and fade in the music
         if (changeVolumeRoutine != null)
@@ -21,7 +28,7 @@ public class MusicScript : MonoBehaviour
         changeVolumeRoutine = StartCoroutine(ChangeVolume(1, 7));
     }
     
-    public void StopMusic()
+    private void StopMusic()
     {
         //Stop the previous routine and fade out the music
         if (changeVolumeRoutine != null)
