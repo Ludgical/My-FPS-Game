@@ -3,14 +3,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
-    [SerializeField] private Camera camera;
-    [SerializeField] private GunScript gun;
-    [SerializeField] private GameObject gunPosition;
-    [SerializeField] private Animator animator;
+    private References refs;
+    
     [SerializeField] private CapsuleCollider collider;
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private LogicScript logic;
-    [SerializeField] private DoorScript door;
+    [SerializeField] public Rigidbody rb;
 
     //Player input
     private Vector2 moveInput;
@@ -19,34 +15,21 @@ public class PlayerScript : MonoBehaviour
     private bool shouldBeCrouched;
     
     //Player info
-    private bool isOnGround;
+    public bool isOnGround;
     private bool isCrouched;
     private bool runAnimationIsOn;
     private float cameraXRotation;
     private float playerYRotation;
-    
+
     private void Start()
     {
-        SetFOV(logic.fov);
+        refs = References.Refs;
     }
 
-    private void SetFOV(float newFov)
-    {
-        camera.fieldOfView = newFov;
-        gun.SetZPosition(logic.fov);
-    }
-
-    public void SetIsOnGround(bool value)
-    {
-        isOnGround = value;
-    }
-    
     private void FixedUpdate()
     {
-        //Move to when the fov slider changes (temporary)
-        // SetFOV(logic.fov);
-        
-        if (!logic.gameIsOn)
+        //The player can't move if the game isn't on
+        if (!refs.gameLogic.gameIsOn)
             return;
         
         //Crouch and stand up
@@ -61,7 +44,8 @@ public class PlayerScript : MonoBehaviour
     
     private void Update()
     {
-        if (!logic.gameIsOn)
+        //The player can't move if the game isn't on
+        if (!refs.gameLogic.gameIsOn)
             return;
         
         //Look around with the mouse
@@ -74,16 +58,17 @@ public class PlayerScript : MonoBehaviour
     
     private void Crouch()
     {
+        //If the player's crouch state is already correct, return
         if (shouldBeCrouched == isCrouched)
             return;
 
-        var colliderHeight = logic.colliderHeight;
+        var colliderHeight = refs.playerData.colliderHeight;
         
         if (shouldBeCrouched)
         {
             //Crouch
             isCrouched = true;
-            animator.SetBool("IsCrouched", true);
+            refs.playerAnimator.SetBool("IsCrouched", true);
             
             //Make the collider shorter
             collider.height = colliderHeight / 2;
@@ -93,7 +78,7 @@ public class PlayerScript : MonoBehaviour
         {
             //Stand up
             isCrouched = false;
-            animator.SetBool("IsCrouched", false);
+            refs.playerAnimator.SetBool("IsCrouched", false);
             
             //Make the collider taller
             collider.height = colliderHeight;
@@ -106,21 +91,23 @@ public class PlayerScript : MonoBehaviour
         //Get a movement vector from the direction the player is facing and the move input
         var movement = transform.forward * moveInput.y + transform.right * moveInput.x;
         
-        //Use lerp functions to keep accelerating until a max speed
-        var maxMoveSpeed = isCrouched ? logic.maxCrouchSpeed : logic.maxRunSpeed;
-        var movementLerpStep = isOnGround ? logic.movementLerpStepGround : logic.movementLerpStepAir;
+        //Change the max move speed based on if the player is crouched or not
+        var maxMoveSpeed = isCrouched ? refs.playerData.maxCrouchSpeed : refs.playerData.maxRunSpeed;
+        //Change the acceleration speed based on if the player is in the air or not
+        var movementLerpStep = isOnGround ? refs.playerData.movementLerpStepGround : refs.playerData.movementLerpStepAir;
         
+        //Use lerp functions to keep accelerating until a max speed
         var newXVelocity = Mathf.Lerp(
             rb.linearVelocity.x, movement.x * maxMoveSpeed, movementLerpStep);
         var newZVelocity = Mathf.Lerp(
             rb.linearVelocity.z, movement.z * maxMoveSpeed, movementLerpStep);
         
         //Set the velocities to 0 if they are very close to 0 (stop moving if the player is basically still)
-        newXVelocity = newXVelocity is > -0.001f and < 0.001f ? 0 : newXVelocity;
-        newZVelocity = newZVelocity is > -0.001f and < 0.001f ? 0 : newZVelocity;
+        if (Mathf.Abs(newXVelocity) < 0.001f) newXVelocity = 0;
+        if (Mathf.Abs(newZVelocity) < 0.001f) newZVelocity = 0;
         
         //Upwards velocity (jumping)
-        var newYVelocity = jumpInput && isOnGround ? logic.jumpStrength : rb.linearVelocity.y;
+        var newYVelocity = jumpInput && isOnGround ? refs.playerData.jumpStrength : rb.linearVelocity.y;
 
         //Apply the velocity to the rigidbody of the player
         rb.linearVelocity = new Vector3(newXVelocity, newYVelocity, newZVelocity);
@@ -128,18 +115,19 @@ public class PlayerScript : MonoBehaviour
 
     private void Look()
     {
+        //Return if the player didn't move the mouse
         if (lookInput is { x: 0, y: 0 })
             return;
         
         //Get how much up/down and left/right the mouse moved
-        var realSensitivity = logic.sensitivity / 500;
+        var realSensitivity = Settings.Player.Sensitivity / 250;
         var mouseX = lookInput.x * realSensitivity;
         var mouseY = lookInput.y * realSensitivity;
         
         //Rotate the camera up and down locally
         cameraXRotation -= mouseY;
         cameraXRotation = Mathf.Clamp(cameraXRotation, -90, 90);
-        camera.transform.localRotation = Quaternion.Euler(cameraXRotation, 0, 0);
+        refs.camera.transform.localRotation = Quaternion.Euler(cameraXRotation, 0, 0);
         
         //Rotate the player right and left
         playerYRotation += mouseX;
@@ -148,20 +136,23 @@ public class PlayerScript : MonoBehaviour
 
     private void SetRunAnimation()
     {
-        //Show the running animation if the player is moving quick enough
+        //The speed at which the player is moving
         var speed = new Vector2(rb.linearVelocity.x, rb.linearVelocity.z).magnitude;
-        var showRunAnimation = speed > logic.speedForRunAnimation && isOnGround;
+        //The running animation can be enabled if the player is moving quick enough
+        var showRunAnimation = speed > refs.playerData.speedForRunAnimation && isOnGround;
+        //Enable or disable the running animation if it's not already in the correct state
         if (showRunAnimation != runAnimationIsOn)
         {
-            animator.SetBool("IsRunning", showRunAnimation);
+            refs.playerAnimator.SetBool("IsRunning", showRunAnimation);
             runAnimationIsOn = showRunAnimation;
         }
     }
 
     private void Gravity()
     {
+        //Apply gravity with a scale to the player
         if (!isOnGround)
-            rb.AddForce(9.81f * logic.gravityScale * Vector3.down, ForceMode.Acceleration);
+            rb.AddForce(9.81f * refs.playerData.gravityScale * Vector3.down, ForceMode.Acceleration);
     }
     
     
@@ -171,23 +162,26 @@ public class PlayerScript : MonoBehaviour
     
     public void OnMove(InputAction.CallbackContext context)
     {
-        //moveInput is a vector in local space
+        //Vector showing the player's WASD input
         moveInput = context.ReadValue<Vector2>();
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
+        //Vector showing the player's mouse movement
         lookInput = context.ReadValue<Vector2>();
     }
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (context.performed)
-            Debug.Log("Pew!");
+        //Shoot if the player left-clicked and the game is on
+        if (context.performed && refs.gameLogic.gameIsOn)
+            refs.gun.Fire();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        //When space is held down, jumpInput = true
         if (context.performed)
             jumpInput = true;
         else if (context.canceled)
@@ -195,13 +189,15 @@ public class PlayerScript : MonoBehaviour
     }
     public void OnCrouch(InputAction.CallbackContext context)
     {
-        if (logic.toggleCrouch)
+        if (Settings.Player.ToggleCrouch)
         {
+            //If toggle crouch, change state when the crouch button is pressed
             if (context.performed)
                 shouldBeCrouched = !shouldBeCrouched;
         }
         else
         {
+            //If not toggle crouch, crouch when pressed and uncrouch when let go
             if (context.performed)
                 shouldBeCrouched = true;
             else if (context.canceled)
@@ -215,8 +211,9 @@ public class PlayerScript : MonoBehaviour
 
     public void ResetPlayer()
     {
+        //Move the player back to the start position
         rb.position = new Vector3(0, 0, -6);
         transform.position = new Vector3(0, 0, -6);
-        camera.transform.rotation = Quaternion.identity;
+        refs.camera.transform.rotation = Quaternion.identity;
     }
 }

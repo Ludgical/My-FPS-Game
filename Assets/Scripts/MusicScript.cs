@@ -18,7 +18,7 @@ public class MusicScript : MonoBehaviour
         //Stop the previous routine and fade in the music
         if (changeVolumeRoutine != null)
             StopCoroutine(changeVolumeRoutine);
-        changeVolumeRoutine = StartCoroutine(ChangeVolume(0.5f, 7));
+        changeVolumeRoutine = StartCoroutine(ChangeVolume(1, 7));
     }
     
     public void StopMusic()
