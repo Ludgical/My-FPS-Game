@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,7 @@ public class PlayerScript : MonoBehaviour
     private References refs;
     
     [SerializeField] private CapsuleCollider collider;
-    [SerializeField] public Rigidbody rb;
+    [SerializeField] private Rigidbody rb;
 
     //Player input
     private Vector2 moveInput;
@@ -20,6 +21,9 @@ public class PlayerScript : MonoBehaviour
     private bool runAnimationIsOn;
     private float cameraXRotation;
     private float playerYRotation;
+    
+    private Coroutine crouchCoroutine;
+    private float cameraYVelocity;
 
     private void Start()
     {
@@ -33,7 +37,7 @@ public class PlayerScript : MonoBehaviour
             return;
         
         //Crouch and stand up
-        Crouch();
+        CrouchOrStandUp();
         //Move forward, backward, left, right and jump
         Move();
         //Show the running animation if the player is running
@@ -56,7 +60,7 @@ public class PlayerScript : MonoBehaviour
     //Movement
     //--------
     
-    private void Crouch()
+    private void CrouchOrStandUp()
     {
         //If the player's crouch state is already correct, return
         if (shouldBeCrouched == isCrouched)
@@ -65,24 +69,52 @@ public class PlayerScript : MonoBehaviour
         var colliderHeight = refs.playerData.colliderHeight;
         
         if (shouldBeCrouched)
+            Crouch();
+        else
+            StandUp();
+        return;
+
+        void Crouch()
         {
-            //Crouch
             isCrouched = true;
-            refs.playerAnimator.SetBool("IsCrouched", true);
             
-            //Make the collider shorter
             collider.height = colliderHeight / 2;
             collider.center = new Vector3(0, colliderHeight / 4, 0);
-        }
-        else
-        {
-            //Stand up
-            isCrouched = false;
-            refs.playerAnimator.SetBool("IsCrouched", false);
             
-            //Make the collider taller
+            if (crouchCoroutine != null)
+                StopCoroutine(crouchCoroutine);
+            crouchCoroutine = StartCoroutine(ChangeCameraHeight(refs.playerData.crouchHeight));
+        }
+        void StandUp()
+        {
+            isCrouched = false;
+            
             collider.height = colliderHeight;
             collider.center = new Vector3(0, colliderHeight / 2, 0);
+            
+            if (crouchCoroutine != null)
+                StopCoroutine(crouchCoroutine);
+            crouchCoroutine = StartCoroutine(ChangeCameraHeight(refs.playerData.standHeight));
+        }
+        
+        IEnumerator ChangeCameraHeight(float targetHeight)
+        {
+            var camTransform = refs.camera.transform;
+        
+            //If the camera isn't very close to its goal position
+            while (Mathf.Abs(targetHeight - camTransform.localPosition.y) > 0.01f)
+            {
+                //Move the camera closer to its goal position and wait for the next frame
+                var camPosition = camTransform.localPosition;
+                camPosition.y = Mathf.SmoothDamp(camPosition.y, targetHeight, ref cameraYVelocity, refs.playerData.crouchAnimationDampTime);
+                camTransform.localPosition = camPosition;
+                yield return null;
+            }
+        
+            //Move the camera to its goal position
+            var newPosition = camTransform.localPosition;
+            newPosition.y = targetHeight;
+            camTransform.localPosition = newPosition;
         }
     }
 

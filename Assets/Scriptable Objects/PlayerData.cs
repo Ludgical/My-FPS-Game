@@ -13,5 +13,8 @@ namespace Scriptable_Objects
         public float movementLerpStepGround;
         public float movementLerpStepAir;
         public float speedForRunAnimation;
+        public float standHeight;
+        public float crouchHeight;
+        public float crouchAnimationDampTime;
     }
 }
