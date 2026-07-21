@@ -1,11 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
-public class MusicScript : MonoBehaviour
+public class AudioScript : MonoBehaviour
 {
     private References refs;
     
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private AudioSource backgroundMusicSource;
     [SerializeField] private AudioClip backgroundMusic;
     
     private Coroutine changeVolumeRoutine;
@@ -18,6 +20,15 @@ public class MusicScript : MonoBehaviour
         
         refs.gameLogic.onPlay += StopMusic;
         refs.gameLogic.onCompleted += StartMusic;
+
+        refs.gameLogic.onChangeVolume += () =>
+        {
+            //Change the volume of the audio mixer
+            //-80 db is silent
+            //Divide by 50 instead of 100 to make louder sounds even louder
+            var volumeDecibels = Settings.Game.Volume == 0 ? -80 : Mathf.Log10(Settings.Game.Volume / 50) * 20;
+            audioMixer.SetFloat("Volume", volumeDecibels);
+        };
     }
 
     private void StartMusic()
@@ -40,25 +51,25 @@ public class MusicScript : MonoBehaviour
     {
         //Start the music if it's not getting turned off
         if (newVolume > 0f)
-            audioSource.Play();
+            backgroundMusicSource.Play();
         
         //The amount of steps to take to get to the new volume
         var stepCount = (int)(fadeDurationSeconds * 50);
         //The amount the volume changes by on a step
-        var volumeChangePerStep = (newVolume - audioSource.volume) / stepCount;
+        var volumeChangePerStep = (newVolume - backgroundMusicSource.volume) / stepCount;
         
         for (var i = 0; i < stepCount; i++)
         {
             //Move the volume closer to the goal and wait for the next step
-            audioSource.volume += volumeChangePerStep;
+            backgroundMusicSource.volume += volumeChangePerStep;
             yield return new WaitForSeconds(fadeDurationSeconds / stepCount);
         }
         
         //Set the volume to the correct volume
-        audioSource.volume = newVolume;
+        backgroundMusicSource.volume = newVolume;
 
         //Stop the music if it's getting turned off
         if (newVolume == 0)
-            audioSource.Stop();
+            backgroundMusicSource.Stop();
     }
 }

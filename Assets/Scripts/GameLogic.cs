@@ -7,6 +7,11 @@ public class GameLogic : MonoBehaviour
     public Action onPlay;
     public Action onCompleted;
     
+    public Action onChangeSensitivity;
+    public Action onChangeFOV;
+    public Action onPressToggleCrouch;
+    public Action onChangeVolume;
+    
     [SerializeField] private Button timedButton;
     [SerializeField] private Button tutorialButton;
 
@@ -16,27 +21,23 @@ public class GameLogic : MonoBehaviour
     {
         timedButton.onClick.AddListener(() =>
         {
-            onPlay.Invoke();
+            onPlay?.Invoke();
         });
         tutorialButton.onClick.AddListener(() =>
         {
-            onPlay.Invoke();
+            onPlay?.Invoke();
         });
         
         onPlay += () =>
         {
             gameIsOn = true;
             Settings.Save();
-            
-            //Hide cursor
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         };
         onCompleted += () =>
         {
             gameIsOn = false;
-            
-            //Show cursor
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         };
@@ -45,6 +46,6 @@ public class GameLogic : MonoBehaviour
     [ContextMenu("completed")]
     private void OnGameCompleted()
     {
-        onCompleted.Invoke();
+        onCompleted?.Invoke();
     }
 }

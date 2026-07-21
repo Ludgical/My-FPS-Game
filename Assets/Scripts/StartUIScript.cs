@@ -1,14 +1,11 @@
 using System.Globalization;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class StartUIScript : MonoBehaviour
 {
     private References refs;
-    
-    [SerializeField] private AudioMixer audioMixer;
     
     [SerializeField] private Slider sensSlider;
     [SerializeField] private TMP_Text sensText;
@@ -16,69 +13,107 @@ public class StartUIScript : MonoBehaviour
     [SerializeField] private TMP_Text fovText;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private TMP_Text volumeText;
+    [SerializeField] private Button toggleCrouchButton;
     [SerializeField] private TMP_Text toggleCrouchText;
 
     private void Start()
     {
         refs = References.Refs;
-
-        //Set up sliders and button
-        sensSlider.value = Settings.Player.Sensitivity;
-        OnChangeSens();
-        fovSlider.value = Settings.Player.FOV;
-        OnChangeFov();
-        SetToggleCrouchText();
-        volumeSlider.value = Settings.Game.Volume;
-        OnChangeVolume();
         
-        //Show on game start and hide on game completed
+        SetUpUI();
+        
+        //Show UI on game start and hide on game completed
         refs.gameLogic.onPlay += () => gameObject.SetActive(false);
         refs.gameLogic.onCompleted += () => gameObject.SetActive(true);
+        
+        SetUpOnChangeSens();
+        SetUpOnChangeFov();
+        SetUpOnChangeVolume();
+        SetUpOnPressToggleCrouch();
+    }
+
+    private void SetUpUI()
+    {
+        //Set the values of the sliders
+        sensSlider.value = Settings.Player.Sensitivity;
+        fovSlider.value = Settings.Player.FOV;
+        volumeSlider.value = Settings.Game.Volume;
+        
+        //Set the text on the sliders and buttons
+        SetSensText();
+        SetFOVText();
+        SetToggleCrouchText();
+        SetVolumeText();
     }
     
-    public void OnChangeSens()
+    private void SetUpOnChangeSens()
     {
-        //Change the sensitivity in the settings and on the slider
-        var newSens = sensSlider.value;
-        Settings.Player.Sensitivity = newSens;
-        sensText.text = newSens.ToString(CultureInfo.InvariantCulture);
-    }
-
-    public void OnChangeFov()
-    {
-        //Change the FOV in the settings, on the slider and on the camera
-        var newFov = fovSlider.value;
-        Settings.Player.FOV = newFov;
-        fovText.text = newFov.ToString(CultureInfo.InvariantCulture);
-        refs.camera.fieldOfView = newFov;
-
-        //Set the gun's z-value 
-        var gunPos = refs.gunPivot.localPosition;
-        gunPos.z = -0.00667f * newFov + 1.24f;
-        refs.gunPivot.localPosition = gunPos;
-    }
-
-    public void OnChangeVolume()
-    {
-        //Change the volume in the settings, on the slider and on the camera
-        var newVolume = volumeSlider.value;
-        Settings.Game.Volume = newVolume;
-        volumeText.text = newVolume.ToString(CultureInfo.InvariantCulture);
+        refs.gameLogic.onChangeSensitivity += () =>
+        {
+            Settings.Player.Sensitivity = sensSlider.value;
+            SetSensText();
+        };
         
-        //Change the volume of the audio mixer
-        //-80 db is silent
-        //Divide by 50 instead of 100 to make louder sounds even louder
-        var volumeDecibels = newVolume == 0 ? -80 : Mathf.Log10(newVolume / 50) * 20;
-        audioMixer.SetFloat("Volume", volumeDecibels);
+        sensSlider.onValueChanged.AddListener(_ =>
+        {
+            refs.gameLogic.onChangeSensitivity?.Invoke();
+        });
     }
 
-    public void OnPressToggleCrouch()
+    private void SetUpOnChangeFov()
     {
-        //Invert toggle crouch in the settings and change the text on the button
-        Settings.Player.ToggleCrouch = !Settings.Player.ToggleCrouch;
-        SetToggleCrouchText();
+        refs.gameLogic.onChangeFOV += () =>
+        {
+            Settings.Player.FOV = fovSlider.value;
+            SetFOVText();
+        };
+        
+        fovSlider.onValueChanged.AddListener(_ =>
+        {
+            refs.gameLogic.onChangeFOV?.Invoke();
+        });
     }
 
+    private void SetUpOnChangeVolume()
+    {
+        refs.gameLogic.onChangeVolume += () =>
+        {
+            Settings.Game.Volume = volumeSlider.value;
+            SetVolumeText();
+        };
+        
+        volumeSlider.onValueChanged.AddListener(_ =>
+        {
+            refs.gameLogic.onChangeVolume?.Invoke();
+        });
+    }
+
+    private void SetUpOnPressToggleCrouch()
+    {
+        refs.gameLogic.onPressToggleCrouch += () =>
+        {
+            Settings.Player.ToggleCrouch = !Settings.Player.ToggleCrouch;
+            SetToggleCrouchText();
+        };
+        
+        toggleCrouchButton.onClick.AddListener(() =>
+        {
+            refs.gameLogic.onPressToggleCrouch?.Invoke();
+        });
+    }
+
+    private void SetSensText()
+    {
+        sensText.text = Settings.Player.Sensitivity.ToString(CultureInfo.InvariantCulture);
+    }
+    private void SetFOVText()
+    {
+        fovText.text = Settings.Player.FOV.ToString(CultureInfo.InvariantCulture);
+    }
+    private void SetVolumeText()
+    {
+        volumeText.text = Settings.Game.Volume.ToString(CultureInfo.InvariantCulture);
+    }
     private void SetToggleCrouchText()
     {
         toggleCrouchText.text = Settings.Player.ToggleCrouch ? "Toggle Crouch: ON" : "Toggle Crouch: OFF";

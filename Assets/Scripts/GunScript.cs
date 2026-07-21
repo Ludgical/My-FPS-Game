@@ -24,13 +24,15 @@ public class GunScript : MonoBehaviour
         
         gameObject.SetActive(false);
         
-        refs.gameLogic.onPlay += () =>
+        refs.gameLogic.onPlay += () => gameObject.SetActive(true);
+        refs.gameLogic.onCompleted += () => gameObject.SetActive(false);
+
+        refs.gameLogic.onChangeFOV += () =>
         {
-            gameObject.SetActive(true);
-        };
-        refs.gameLogic.onCompleted += () =>
-        {
-            gameObject.SetActive(false);
+            //Set the gun's z-value 
+            var gunPos = refs.gunPivot.localPosition;
+            gunPos.z = Settings.Player.FOV / -150 + 1.24f;
+            refs.gunPivot.localPosition = gunPos;
         };
     }
 

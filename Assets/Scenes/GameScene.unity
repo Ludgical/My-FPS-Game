@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 198663629}
   - component: {fileID: 198663628}
   - component: {fileID: 198663631}
+  - component: {fileID: 198663632}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -464,6 +465,18 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &198663632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198663627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a795c425468c148a7f8ba7cc26b83b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &223095008
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,19 +559,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 223095011}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 897728683}
-        m_TargetAssemblyTypeName: StartUIScript, Assembly-CSharp
-        m_MethodName: OnPressToggleCrouch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &223095011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1276,19 +1277,7 @@ MonoBehaviour:
   m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 897728683}
-        m_TargetAssemblyTypeName: StartUIScript, Assembly-CSharp
-        m_MethodName: OnChangeVolume
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &403168971
 GameObject:
   m_ObjectHideFlags: 0
@@ -2456,13 +2445,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280a252fc6f61984c9eb66b02f12b3e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIScript
-  audioMixer: {fileID: 24100000, guid: 2a7d233e379fbbb4baf2cb3ce89586e3, type: 2}
   sensSlider: {fileID: 939515692}
   sensText: {fileID: 415487250}
   fovSlider: {fileID: 1115939834}
   fovText: {fileID: 1423535205}
   volumeSlider: {fileID: 383297177}
   volumeText: {fileID: 784785391}
+  toggleCrouchButton: {fileID: 223095010}
   toggleCrouchText: {fileID: 1024588816}
 --- !u!1 &923735999 stripped
 GameObject:
@@ -2669,19 +2658,7 @@ MonoBehaviour:
   m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 897728683}
-        m_TargetAssemblyTypeName: StartUIScript, Assembly-CSharp
-        m_MethodName: OnChangeSens
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &939515693
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3084,19 +3061,7 @@ MonoBehaviour:
   m_Value: 70
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 897728683}
-        m_TargetAssemblyTypeName: StartUIScript, Assembly-CSharp
-        m_MethodName: OnChangeFov
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1117669945
 GameObject:
   m_ObjectHideFlags: 0
@@ -3805,9 +3770,7 @@ MonoBehaviour:
   camera: {fileID: 198663629}
   gunPivot: {fileID: 1728244672}
   delayedFollowPivot: {fileID: 1154685324}
-  gunObject: {fileID: 923735999}
   gun: {fileID: 923736000}
-  startUI: {fileID: 897728678}
   playerData: {fileID: 11400000, guid: 75639d879b18fba4e85191332406cb01, type: 2}
   gunData: {fileID: 11400000, guid: cbc94dee812f5e040b84e711cba0e15d, type: 2}
 --- !u!4 &1302023023
@@ -5186,7 +5149,7 @@ GameObject:
   - component: {fileID: 1719298841}
   - component: {fileID: 1719298840}
   m_Layer: 0
-  m_Name: Music
+  m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5204,7 +5167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a0a4f761704174488ea4d38d428e1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  audioSource: {fileID: 1719298841}
+  audioMixer: {fileID: 24100000, guid: 2a7d233e379fbbb4baf2cb3ce89586e3, type: 2}
+  backgroundMusicSource: {fileID: 1719298841}
   backgroundMusic: {fileID: 8300000, guid: aad41585934b8f44aa8248e41273b2f7, type: 3}
 --- !u!82 &1719298841
 AudioSource:
