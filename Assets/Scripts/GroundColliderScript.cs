@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class GroundColliderScript : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider _)
     {
-        References.Refs.player.isOnGround = true;
+        References.Refs.player.SetIsOnGround(true);
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider _)
     {
-        References.Refs.player.isOnGround = false;
+        References.Refs.player.SetIsOnGround(false);
     }
 }

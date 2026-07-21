@@ -73,7 +73,7 @@ public class GunScript : MonoBehaviour
             Time.deltaTime * refs.gunData.rotationOffsetSpeed);
     }
 
-    public void Fire()
+    public void TryFire()
     {
         //Can't fire if enough time hasn't passed since the last shot
         if (timeSinceLastShot < refs.gunData.cooldown)
@@ -81,6 +81,11 @@ public class GunScript : MonoBehaviour
         //Reset the timer
         timeSinceLastShot = 0;
         
+        Fire();
+    }
+
+    private void Fire()
+    {
         audioSource.PlayOneShot(gunFiringClip);
         refs.playerAnimator.SetTrigger("Fire");
     }

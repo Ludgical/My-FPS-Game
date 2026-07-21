@@ -3800,7 +3800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   gameLogic: {fileID: 249302720}
-  player: {fileID: 1736651611}
+  player: {fileID: 1736651616}
   playerAnimator: {fileID: 1736651615}
   camera: {fileID: 198663629}
   gunPivot: {fileID: 1728244672}
@@ -5364,6 +5364,8 @@ GameObject:
   - component: {fileID: 1736651613}
   - component: {fileID: 1736651615}
   - component: {fileID: 1736651611}
+  - component: {fileID: 1736651617}
+  - component: {fileID: 1736651616}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5423,9 +5425,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bfa291ed41a3444b71fcfbd552d187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
-  collider: {fileID: 1736651610}
-  rb: {fileID: 1736651614}
-  isOnGround: 0
 --- !u!114 &1736651613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5585,6 +5584,36 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1736651616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736651608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b132603251a3cb34eacccc18b11a96a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  input: {fileID: 1736651611}
+  collider: {fileID: 1736651610}
+  rb: {fileID: 1736651614}
+--- !u!114 &1736651617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736651608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1646623b041834ba13f185ea702a48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  input: {fileID: 1736651611}
+  collider: {fileID: 1736651610}
+  rb: {fileID: 1736651614}
 --- !u!4 &1737172230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3699149620440010827, guid: 3570216737b7c124eaf6e4d43dc4da06, type: 3}
