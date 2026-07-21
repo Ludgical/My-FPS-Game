@@ -186,69 +186,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8409045730147059705, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
   m_PrefabInstance: {fileID: 511954864153326132}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &75607364 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1526257533687799065, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
-  m_PrefabInstance: {fileID: 511954864153326132}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0f972f95f6d7ce43a1c6bfc07193a17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
---- !u!1 &86794973
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 86794975}
-  - component: {fileID: 86794974}
-  m_Layer: 0
-  m_Name: UI Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &86794974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 86794973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 280a252fc6f61984c9eb66b02f12b3e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIScript
-  audioMixer: {fileID: 24100000, guid: 2a7d233e379fbbb4baf2cb3ce89586e3, type: 2}
-  sensSlider: {fileID: 939515692}
-  sensText: {fileID: 415487250}
-  fovSlider: {fileID: 1115939834}
-  fovText: {fileID: 1423535205}
-  volumeSlider: {fileID: 383297177}
-  volumeText: {fileID: 784785391}
-  toggleCrouchText: {fileID: 1024588816}
---- !u!4 &86794975
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 86794973}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &91907102 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1746442002994451997, guid: 01058e26a976dd047aa627d9959a2110, type: 3}
@@ -401,6 +338,7 @@ GameObject:
   - component: {fileID: 198663629}
   - component: {fileID: 198663628}
   - component: {fileID: 198663631}
+  - component: {fileID: 198663632}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -527,6 +465,18 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &198663632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198663627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a795c425468c148a7f8ba7cc26b83b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &223095008
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,19 +559,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 223095011}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 86794974}
-        m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
-        m_MethodName: OnPressToggleCrouch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &223095011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,8 +632,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3af0829542a4dfc46b548ab7aea24dcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  startRoomDoor: {fileID: 75607364}
-  musicScript: {fileID: 1719298840}
+  timedButton: {fileID: 1500076821}
+  tutorialButton: {fileID: 802916765}
   gameIsOn: 0
 --- !u!4 &249302721
 Transform:
@@ -1339,19 +1277,7 @@ MonoBehaviour:
   m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 86794974}
-        m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
-        m_MethodName: OnChangeVolume
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &403168971
 GameObject:
   m_ObjectHideFlags: 0
@@ -2244,19 +2170,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 802916766}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 249302720}
-        m_TargetAssemblyTypeName: LogicScript, Assembly-CSharp
-        m_MethodName: OnPlayTutorial
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &802916766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2424,6 +2338,7 @@ GameObject:
   - component: {fileID: 897728681}
   - component: {fileID: 897728680}
   - component: {fileID: 897728679}
+  - component: {fileID: 897728683}
   m_Layer: 5
   m_Name: Start UI
   m_TagString: Untagged
@@ -2518,6 +2433,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &897728683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897728678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280a252fc6f61984c9eb66b02f12b3e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIScript
+  sensSlider: {fileID: 939515692}
+  sensText: {fileID: 415487250}
+  fovSlider: {fileID: 1115939834}
+  fovText: {fileID: 1423535205}
+  volumeSlider: {fileID: 383297177}
+  volumeText: {fileID: 784785391}
+  toggleCrouchButton: {fileID: 223095010}
+  toggleCrouchText: {fileID: 1024588816}
 --- !u!1 &923735999 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4951753683769493580, guid: cd976b636adfaeb4988ea2a014ea2581, type: 3}
@@ -2723,19 +2658,7 @@ MonoBehaviour:
   m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 86794974}
-        m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
-        m_MethodName: OnChangeSens
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &939515693
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3138,19 +3061,7 @@ MonoBehaviour:
   m_Value: 70
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 86794974}
-        m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
-        m_MethodName: OnChangeFov
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1117669945
 GameObject:
   m_ObjectHideFlags: 0
@@ -3854,14 +3765,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   gameLogic: {fileID: 249302720}
-  player: {fileID: 1736651611}
+  player: {fileID: 1736651616}
   playerAnimator: {fileID: 1736651615}
   camera: {fileID: 198663629}
   gunPivot: {fileID: 1728244672}
   delayedFollowPivot: {fileID: 1154685324}
-  gunObject: {fileID: 923735999}
   gun: {fileID: 923736000}
-  startUI: {fileID: 897728678}
   playerData: {fileID: 11400000, guid: 75639d879b18fba4e85191332406cb01, type: 2}
   gunData: {fileID: 11400000, guid: cbc94dee812f5e040b84e711cba0e15d, type: 2}
 --- !u!4 &1302023023
@@ -4406,19 +4315,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1500076822}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 249302720}
-        m_TargetAssemblyTypeName: LogicScript, Assembly-CSharp
-        m_MethodName: OnPlayTimed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1500076822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5025,7 +4922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4951753683769493580, guid: cd976b636adfaeb4988ea2a014ea2581, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5252,7 +5149,7 @@ GameObject:
   - component: {fileID: 1719298841}
   - component: {fileID: 1719298840}
   m_Layer: 0
-  m_Name: Music
+  m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5270,7 +5167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a0a4f761704174488ea4d38d428e1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  audioSource: {fileID: 1719298841}
+  audioMixer: {fileID: 24100000, guid: 2a7d233e379fbbb4baf2cb3ce89586e3, type: 2}
+  backgroundMusicSource: {fileID: 1719298841}
   backgroundMusic: {fileID: 8300000, guid: aad41585934b8f44aa8248e41273b2f7, type: 3}
 --- !u!82 &1719298841
 AudioSource:
@@ -5430,6 +5328,8 @@ GameObject:
   - component: {fileID: 1736651613}
   - component: {fileID: 1736651615}
   - component: {fileID: 1736651611}
+  - component: {fileID: 1736651617}
+  - component: {fileID: 1736651616}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5489,9 +5389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bfa291ed41a3444b71fcfbd552d187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
-  collider: {fileID: 1736651610}
-  rb: {fileID: 1736651614}
-  isOnGround: 0
 --- !u!114 &1736651613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5651,6 +5548,36 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1736651616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736651608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b132603251a3cb34eacccc18b11a96a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  input: {fileID: 1736651611}
+  collider: {fileID: 1736651610}
+  rb: {fileID: 1736651614}
+--- !u!114 &1736651617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736651608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1646623b041834ba13f185ea702a48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  input: {fileID: 1736651611}
+  collider: {fileID: 1736651610}
+  rb: {fileID: 1736651614}
 --- !u!4 &1737172230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3699149620440010827, guid: 3570216737b7c124eaf6e4d43dc4da06, type: 3}
@@ -6524,7 +6451,6 @@ SceneRoots:
   - {fileID: 897728682}
   - {fileID: 1009716521}
   - {fileID: 249302721}
-  - {fileID: 86794975}
   - {fileID: 1719298842}
   - {fileID: 1302023023}
   - {fileID: 1698694297}

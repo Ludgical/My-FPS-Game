@@ -21,6 +21,19 @@ public class GunScript : MonoBehaviour
         refs = References.Refs;
         gunPivot = refs.gunPivot;
         delayedFollowPivot = refs.delayedFollowPivot;
+        
+        gameObject.SetActive(false);
+        
+        refs.gameLogic.onPlay += () => gameObject.SetActive(true);
+        refs.gameLogic.onCompleted += () => gameObject.SetActive(false);
+
+        refs.gameLogic.onChangeFOV += () =>
+        {
+            //Set the gun's z-value 
+            var gunPos = refs.gunPivot.localPosition;
+            gunPos.z = Settings.Player.FOV / -150 + 1.24f;
+            refs.gunPivot.localPosition = gunPos;
+        };
     }
 
     private void Update()
@@ -62,7 +75,7 @@ public class GunScript : MonoBehaviour
             Time.deltaTime * refs.gunData.rotationOffsetSpeed);
     }
 
-    public void Fire()
+    public void TryFire()
     {
         //Can't fire if enough time hasn't passed since the last shot
         if (timeSinceLastShot < refs.gunData.cooldown)
@@ -70,6 +83,11 @@ public class GunScript : MonoBehaviour
         //Reset the timer
         timeSinceLastShot = 0;
         
+        Fire();
+    }
+
+    private void Fire()
+    {
         audioSource.PlayOneShot(gunFiringClip);
         refs.playerAnimator.SetTrigger("Fire");
     }

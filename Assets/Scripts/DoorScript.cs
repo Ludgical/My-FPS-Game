@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class DoorScript : MonoBehaviour
 {
+    private References refs;
+    
     [SerializeField] private GameObject doorLeft;
     [SerializeField] private GameObject doorRight;
     [SerializeField] private GameObject[] targets;
@@ -18,6 +20,8 @@ public class DoorScript : MonoBehaviour
 
     private void Start()
     {
+        refs = References.Refs;
+        
         //Where the sides of the door started
         doorLeftStart = doorLeft.transform.position;
         doorRightStart = doorRight.transform.position;
@@ -35,16 +39,22 @@ public class DoorScript : MonoBehaviour
     private void SetUpTargets()
     {
         if (isStartRoomDoor)
-        {
-            foreach (var target in targets)
-                target.SetActive(false);
-            return;
-        }
+            SetUpStartRoomDoor();
 
         
     }
 
-    public void OpenDoor(float waitTime)
+    private void SetUpStartRoomDoor()
+    {
+        //The start room door doesn't have targets
+        foreach (var target in targets)
+            target.SetActive(false);
+
+        refs.gameLogic.onPlay += () => OpenDoor(1.2f);
+        refs.gameLogic.onCompleted += CloseDoor;
+    }
+
+    private void OpenDoor(float waitTime)
     {
         //Start coroutine to open the door
         StartCoroutine(OpenDoorRoutine(waitTime));
@@ -83,7 +93,7 @@ public class DoorScript : MonoBehaviour
         doorRight.transform.position = doorRightGoal;
     }
 
-    public void CloseDoor()
+    private void CloseDoor()
     {
         //Close the door instantly
         doorLeft.transform.position = doorLeftStart;

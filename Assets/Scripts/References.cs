@@ -11,9 +11,7 @@ public class References : MonoBehaviour
     public Camera camera;
     public Transform gunPivot;
     public Transform delayedFollowPivot;
-    public GameObject gunObject;
     public GunScript gun;
-    public GameObject startUI;
     public PlayerData playerData;
     public GunData gunData;
 
