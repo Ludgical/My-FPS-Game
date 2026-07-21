@@ -19,21 +19,17 @@ public class GunScript : MonoBehaviour
     private void Start()
     {
         refs = References.Refs;
+        
         gunPivot = refs.gunPivot;
         delayedFollowPivot = refs.delayedFollowPivot;
         
         gameObject.SetActive(false);
+        SetZValue();
         
         refs.gameLogic.onPlay += () => gameObject.SetActive(true);
         refs.gameLogic.onCompleted += () => gameObject.SetActive(false);
 
-        refs.gameLogic.onChangeFOV += () =>
-        {
-            //Set the gun's z-value 
-            var gunPos = refs.gunPivot.localPosition;
-            gunPos.z = Settings.Player.FOV / -150 + 1.24f;
-            refs.gunPivot.localPosition = gunPos;
-        };
+        refs.gameLogic.onChangeFOV += SetZValue;
     }
 
     private void Update()
@@ -73,6 +69,14 @@ public class GunScript : MonoBehaviour
         delayedFollowPivot.localRotation = Quaternion.Lerp(
             delayedFollowPivot.localRotation, goalRotationOffset, 
             Time.deltaTime * refs.gunData.rotationOffsetSpeed);
+    }
+
+    private void SetZValue()
+    {
+        //Set the gun's z-value based on the player's fov
+        var gunPos = refs.gunPivot.localPosition;
+        gunPos.z = Settings.Player.FOV / -150 + 1.24f;
+        refs.gunPivot.localPosition = gunPos;
     }
 
     public void TryFire()

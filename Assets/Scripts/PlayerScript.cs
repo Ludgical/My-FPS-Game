@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -14,11 +12,6 @@ public class PlayerScript : MonoBehaviour
     public bool IsCrouched { get; private set; }
     
     private bool runAnimationIsOn;
-    private float cameraXRotation;
-    private float playerYRotation;
-    
-    private Coroutine crouchCoroutine;
-    private float cameraYVelocity;
 
     private void Start()
     {

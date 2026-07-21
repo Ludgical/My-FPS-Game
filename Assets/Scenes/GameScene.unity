@@ -5560,7 +5560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b132603251a3cb34eacccc18b11a96a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  input: {fileID: 1736651611}
+  input: {fileID: 0}
   collider: {fileID: 1736651610}
   rb: {fileID: 1736651614}
 --- !u!114 &1736651617

@@ -48,58 +48,58 @@ public class StartUIScript : MonoBehaviour
     
     private void SetUpOnChangeSens()
     {
+        sensSlider.onValueChanged.AddListener(_ =>
+        {
+            refs.gameLogic.onChangeSensitivity?.Invoke();
+        });
+        
         refs.gameLogic.onChangeSensitivity += () =>
         {
             Settings.Player.Sensitivity = sensSlider.value;
             SetSensText();
         };
-        
-        sensSlider.onValueChanged.AddListener(_ =>
-        {
-            refs.gameLogic.onChangeSensitivity?.Invoke();
-        });
     }
 
     private void SetUpOnChangeFov()
     {
+        fovSlider.onValueChanged.AddListener(_ =>
+        {
+            refs.gameLogic.onChangeFOV?.Invoke();
+        });
+        
         refs.gameLogic.onChangeFOV += () =>
         {
             Settings.Player.FOV = fovSlider.value;
             SetFOVText();
         };
-        
-        fovSlider.onValueChanged.AddListener(_ =>
-        {
-            refs.gameLogic.onChangeFOV?.Invoke();
-        });
     }
 
     private void SetUpOnChangeVolume()
     {
+        volumeSlider.onValueChanged.AddListener(_ =>
+        {
+            refs.gameLogic.onChangeVolume?.Invoke();
+        });
+        
         refs.gameLogic.onChangeVolume += () =>
         {
             Settings.Game.Volume = volumeSlider.value;
             SetVolumeText();
         };
-        
-        volumeSlider.onValueChanged.AddListener(_ =>
-        {
-            refs.gameLogic.onChangeVolume?.Invoke();
-        });
     }
 
     private void SetUpOnPressToggleCrouch()
     {
+        toggleCrouchButton.onClick.AddListener(() =>
+        {
+            refs.gameLogic.onPressToggleCrouch?.Invoke();
+        });
+        
         refs.gameLogic.onPressToggleCrouch += () =>
         {
             Settings.Player.ToggleCrouch = !Settings.Player.ToggleCrouch;
             SetToggleCrouchText();
         };
-        
-        toggleCrouchButton.onClick.AddListener(() =>
-        {
-            refs.gameLogic.onPressToggleCrouch?.Invoke();
-        });
     }
 
     private void SetSensText()

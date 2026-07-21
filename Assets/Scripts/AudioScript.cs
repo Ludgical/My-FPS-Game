@@ -17,18 +17,12 @@ public class AudioScript : MonoBehaviour
         refs = References.Refs;
         
         StartMusic();
+        SetMixerVolume();
         
         refs.gameLogic.onPlay += StopMusic;
         refs.gameLogic.onCompleted += StartMusic;
 
-        refs.gameLogic.onChangeVolume += () =>
-        {
-            //Change the volume of the audio mixer
-            //-80 db is silent
-            //Divide by 50 instead of 100 to make louder sounds even louder
-            var volumeDecibels = Settings.Game.Volume == 0 ? -80 : Mathf.Log10(Settings.Game.Volume / 50) * 20;
-            audioMixer.SetFloat("Volume", volumeDecibels);
-        };
+        refs.gameLogic.onChangeVolume += SetMixerVolume;
     }
 
     private void StartMusic()
@@ -71,5 +65,13 @@ public class AudioScript : MonoBehaviour
         //Stop the music if it's getting turned off
         if (newVolume == 0)
             backgroundMusicSource.Stop();
+    }
+
+    private void SetMixerVolume()
+    {
+        //-80 db is silent
+        //Divide by 50 instead of 100 to make louder sounds even louder
+        var volumeDecibels = Settings.Game.Volume == 0 ? -80 : Mathf.Log10(Settings.Game.Volume / 50) * 20;
+        audioMixer.SetFloat("Volume", volumeDecibels);
     }
 }
