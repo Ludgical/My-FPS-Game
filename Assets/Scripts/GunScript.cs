@@ -29,7 +29,7 @@ public class GunScript : MonoBehaviour
         refs.gameLogic.onPlay += () => gameObject.SetActive(true);
         refs.gameLogic.onCompleted += () => gameObject.SetActive(false);
 
-        refs.gameLogic.onChangeFOV += SetZValue;
+        Settings.Player.FOV.onUpdated += SetZValue;
     }
 
     private void Update()
@@ -75,7 +75,7 @@ public class GunScript : MonoBehaviour
     {
         //Set the gun's z-value based on the player's fov
         var gunPos = refs.gunPivot.localPosition;
-        gunPos.z = Settings.Player.FOV / -150 + 1.24f;
+        gunPos.z = Settings.Player.FOV.Value / -150 + 1.24f;
         refs.gunPivot.localPosition = gunPos;
     }
 

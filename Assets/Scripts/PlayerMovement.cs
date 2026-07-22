@@ -138,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         
         //Get how much up/down and left/right the mouse moved
-        var realSensitivity = Settings.Player.Sensitivity / 350;
+        var realSensitivity = Settings.Player.Sensitivity.Value / 350;
         var mouseX = input.LookInput.x * realSensitivity;
         var mouseY = input.LookInput.y * realSensitivity;
         

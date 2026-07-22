@@ -2445,14 +2445,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280a252fc6f61984c9eb66b02f12b3e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIScript
-  sensSlider: {fileID: 939515692}
-  sensText: {fileID: 415487250}
-  fovSlider: {fileID: 1115939834}
-  fovText: {fileID: 1423535205}
-  volumeSlider: {fileID: 383297177}
-  volumeText: {fileID: 784785391}
-  toggleCrouchButton: {fileID: 223095010}
-  toggleCrouchText: {fileID: 1024588816}
 --- !u!1 &923735999 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4951753683769493580, guid: cd976b636adfaeb4988ea2a014ea2581, type: 3}
@@ -2667,6 +2659,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939515690}
   m_CullTransparentMesh: 1
+--- !u!1 &977014736
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 977014737}
+  - component: {fileID: 977014738}
+  m_Layer: 0
+  m_Name: Settings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &977014737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977014736}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.00086, y: 4.94627, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &977014738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977014736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94ae575b5e13a444cbcbcf27c473826d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Settings
+  sensObject: {fileID: 1131298420}
+  fovObject: {fileID: 1685496909}
+  toggleCrouchObject: {fileID: 223095008}
+  volumeObject: {fileID: 1138389936}
 --- !u!1 &1009716517
 GameObject:
   m_ObjectHideFlags: 0
@@ -5560,7 +5600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b132603251a3cb34eacccc18b11a96a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  input: {fileID: 0}
+  input: {fileID: 1736651611}
   collider: {fileID: 1736651610}
   rb: {fileID: 1736651614}
 --- !u!114 &1736651617
@@ -6452,5 +6492,6 @@ SceneRoots:
   - {fileID: 1009716521}
   - {fileID: 249302721}
   - {fileID: 1719298842}
+  - {fileID: 977014737}
   - {fileID: 1302023023}
   - {fileID: 1698694297}

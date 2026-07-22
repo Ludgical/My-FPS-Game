@@ -20,3 +20,6 @@ MonoBehaviour:
   movementLerpStepGround: 0.2
   movementLerpStepAir: 0.04
   speedForRunAnimation: 9
+  standHeight: 5
+  crouchHeight: 2
+  crouchAnimationDampTime: 0.07

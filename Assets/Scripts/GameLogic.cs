@@ -7,11 +7,6 @@ public class GameLogic : MonoBehaviour
     public Action onPlay;
     public Action onCompleted;
     
-    public Action onChangeSensitivity;
-    public Action onChangeFOV;
-    public Action onPressToggleCrouch;
-    public Action onChangeVolume;
-    
     [SerializeField] private Button timedButton;
     [SerializeField] private Button tutorialButton;
 
@@ -31,7 +26,6 @@ public class GameLogic : MonoBehaviour
         onPlay += () =>
         {
             gameIsOn = true;
-            Settings.Save();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         };

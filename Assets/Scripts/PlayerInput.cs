@@ -44,7 +44,7 @@ public class PlayerInput : MonoBehaviour
     }
     public void OnCrouch(InputAction.CallbackContext context)
     {
-        if (Settings.Player.ToggleCrouch)
+        if (Settings.Player.ToggleCrouch.Value)
         {
             //If toggle crouch, change state when the crouch button is pressed
             if (context.performed)

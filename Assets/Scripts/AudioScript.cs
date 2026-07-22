@@ -22,7 +22,7 @@ public class AudioScript : MonoBehaviour
         refs.gameLogic.onPlay += StopMusic;
         refs.gameLogic.onCompleted += StartMusic;
 
-        refs.gameLogic.onChangeVolume += SetMixerVolume;
+        Settings.Game.MasterVolume.onUpdated += SetMixerVolume;
     }
 
     private void StartMusic()
@@ -71,7 +71,7 @@ public class AudioScript : MonoBehaviour
     {
         //-80 db is silent
         //Divide by 50 instead of 100 to make louder sounds even louder
-        var volumeDecibels = Settings.Game.Volume == 0 ? -80 : Mathf.Log10(Settings.Game.Volume / 50) * 20;
+        var volumeDecibels = Settings.Game.MasterVolume.Value == 0 ? -80 : Mathf.Log10(Settings.Game.MasterVolume.Value / 50) * 20;
         audioMixer.SetFloat("Volume", volumeDecibels);
     }
 }

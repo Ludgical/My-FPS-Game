@@ -10,11 +10,11 @@ public class CameraScript : MonoBehaviour
 
         SetFOV();
         
-        refs.gameLogic.onChangeFOV += SetFOV;
+        Settings.Player.FOV.onUpdated += SetFOV;
     }
 
     private void SetFOV()
     {
-        refs.camera.fieldOfView = Settings.Player.FOV;
+        refs.camera.fieldOfView = Settings.Player.FOV.Value;
     }
 }
