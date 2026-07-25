@@ -2,14 +2,27 @@
 
 public abstract class Objective : MonoBehaviour
 {
+    [SerializeField] private References refs;
+    
     private static int _objectiveCounter;
     private static int _completedObjectiveCounter;
     
     private bool objectiveIsCompleted;
     
-    protected void Awake()
+    protected virtual void Awake()
     {
         _objectiveCounter++;
+    }
+
+    protected virtual void Start()
+    {
+        refs = References.Refs;
+
+        refs.gameLogic.onCompleted += () =>
+        {
+            _completedObjectiveCounter = 0;
+            objectiveIsCompleted = false;
+        };
     }
     
     protected void CompleteObjective()
@@ -20,9 +33,6 @@ public abstract class Objective : MonoBehaviour
         
         _completedObjectiveCounter++;
         if (_completedObjectiveCounter == _objectiveCounter)
-        {
-            _completedObjectiveCounter = 0;
-            References.Refs.gameLogic.OnGameCompleted();
-        }
+            refs.gameLogic.OnGameCompleted();
     }
 }

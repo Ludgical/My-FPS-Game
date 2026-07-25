@@ -20,9 +20,10 @@ public class DoorScript : Objective
     private Vector3 doorRightGoal;
 
     public int lastHitTargetNumber;
-    
-    private void Start()
+
+    protected override void Start()
     {
+        base.Start();
         refs = References.Refs;
         
         //Where the sides of the door started
