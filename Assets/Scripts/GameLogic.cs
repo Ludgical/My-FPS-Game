@@ -1,10 +1,14 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameLogic : MonoBehaviour
 {
+    private References refs;
+    
     public Action onPlay;
+    public Action onResetScene;
     public Action onCompleted;
     
     [SerializeField] private Button timedButton;
@@ -14,6 +18,8 @@ public class GameLogic : MonoBehaviour
 
     private void Start()
     {
+        refs = References.Refs;
+        
         timedButton.onClick.AddListener(() =>
         {
             onPlay?.Invoke();
@@ -29,17 +35,24 @@ public class GameLogic : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         };
-        onCompleted += () =>
+        onResetScene += () =>
         {
             gameIsOn = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         };
     }
-    
-    [ContextMenu("completed")]
-    private void OnGameCompleted()
+
+    public void OnGameCompleted()
     {
         onCompleted?.Invoke();
+        StartCoroutine(InvokeOnCompleted());
+        return;
+
+        IEnumerator InvokeOnCompleted()
+        {
+            yield return new WaitForSeconds(refs.gameData.completedToResetDelay);
+            onResetScene?.Invoke();
+        }
     }
 }

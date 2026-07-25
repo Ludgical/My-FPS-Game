@@ -17,7 +17,7 @@ public class PlayerScript : MonoBehaviour
     {
         refs = References.Refs;
 
-        refs.gameLogic.onCompleted += ResetPlayer;
+        refs.gameLogic.onResetScene += ResetPlayer;
     }
 
     private void FixedUpdate()
@@ -44,6 +44,7 @@ public class PlayerScript : MonoBehaviour
     {
         //Move the player back to the start position and rotation
         rb.position = new Vector3(0, 0, -6);
+        rb.linearVelocity = new Vector3(0, 0, 0);
         transform.position = new Vector3(0, 0, -6);
         refs.camera.transform.rotation = Quaternion.identity;
     }

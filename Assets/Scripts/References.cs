@@ -9,11 +9,12 @@ public class References : MonoBehaviour
     public PlayerScript player;
     public Animator playerAnimator;
     public Camera camera;
-    public Transform gunPivot;
-    public Transform delayedFollowPivot;
     public GunScript gun;
+    public Transform delayedFollowPivot;
+    public Transform gunPivot;
     public PlayerData playerData;
     public GunData gunData;
+    public GameData gameData;
 
     private void Awake()
     {

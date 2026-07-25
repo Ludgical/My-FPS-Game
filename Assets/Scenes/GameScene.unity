@@ -203,6 +203,10 @@ PrefabInstance:
       propertyPath: hasTargets
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4852373579421398979, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6229550826668979514, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
       propertyPath: m_Name
       value: Back Door
@@ -2463,7 +2467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunScript
   audioSource: {fileID: 923736001}
-  gunFiringClip: {fileID: 8300000, guid: 669dd1ea56bb49d4ba0f049125477d43, type: 3}
+  gunFiringSound: {fileID: 8300000, guid: 669dd1ea56bb49d4ba0f049125477d43, type: 3}
 --- !u!82 &923736001
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2719,6 +2723,7 @@ GameObject:
   - component: {fileID: 1009716520}
   - component: {fileID: 1009716519}
   - component: {fileID: 1009716518}
+  - component: {fileID: 1009716522}
   m_Layer: 5
   m_Name: Game UI
   m_TagString: Untagged
@@ -2803,6 +2808,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 299694285}
+  - {fileID: 1439811949}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2810,6 +2816,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1009716522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009716517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d6d035ddaf9a749803892742c1838c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  fadeImage: {fileID: 1439811952}
 --- !u!1 &1024588814
 GameObject:
   m_ObjectHideFlags: 0
@@ -3004,6 +3023,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01058e26a976dd047aa627d9959a2110, type: 3}
+--- !u!23 &1071605460 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4697746032588852282, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+  m_PrefabInstance: {fileID: 1898169967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1071605462 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4559634928947769708, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+  m_PrefabInstance: {fileID: 1898169967}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1115939831
 GameObject:
   m_ObjectHideFlags: 0
@@ -3808,11 +3837,13 @@ MonoBehaviour:
   player: {fileID: 1736651616}
   playerAnimator: {fileID: 1736651615}
   camera: {fileID: 198663629}
-  gunPivot: {fileID: 1728244672}
-  delayedFollowPivot: {fileID: 1154685324}
+  gameUI: {fileID: 1009716522}
   gun: {fileID: 923736000}
+  delayedFollowPivot: {fileID: 1154685324}
+  gunPivot: {fileID: 1728244672}
   playerData: {fileID: 11400000, guid: 75639d879b18fba4e85191332406cb01, type: 2}
   gunData: {fileID: 11400000, guid: cbc94dee812f5e040b84e711cba0e15d, type: 2}
+  gameData: {fileID: 11400000, guid: 8f34d8606339aa649adfe80563796041, type: 2}
 --- !u!4 &1302023023
 Transform:
   m_ObjectHideFlags: 0
@@ -4216,6 +4247,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423535203}
   m_CullTransparentMesh: 1
+--- !u!1 &1439811948
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1439811949}
+  - component: {fileID: 1439811951}
+  - component: {fileID: 1439811952}
+  m_Layer: 5
+  m_Name: FadeImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1439811949
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439811948}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1009716521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1439811951
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439811948}
+  m_CullTransparentMesh: 1
+--- !u!114 &1439811952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439811948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1001 &1447846168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5740,6 +5846,18 @@ PrefabInstance:
       propertyPath: hasTargets
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2404276113119747945, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: renderer
+      value: 
+      objectReference: {fileID: 1071605460}
+    - target: {fileID: 2404276113119747945, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1071605462}
+    - target: {fileID: 2404276113119747945, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: targetHitSound
+      value: 
+      objectReference: {fileID: 8300000, guid: e839eb2ebc67cf44f9c31af10b9376e9, type: 3}
     - target: {fileID: 6229550826668979514, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
       propertyPath: m_Name
       value: Left Door

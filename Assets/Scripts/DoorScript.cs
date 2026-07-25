@@ -1,14 +1,15 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
-public class DoorScript : MonoBehaviour
+public class DoorScript : Objective
 {
     private References refs;
     
     [SerializeField] private GameObject doorLeft;
     [SerializeField] private GameObject doorRight;
-    [SerializeField] private GameObject[] targets;
-    [SerializeField] private bool isStartRoomDoor;
+    [SerializeField] private TargetScript[] targets;
+    [SerializeField] public bool isStartRoomDoor;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip doorOpenSound;
     
@@ -18,6 +19,8 @@ public class DoorScript : MonoBehaviour
     private Vector3 doorLeftGoal;
     private Vector3 doorRightGoal;
 
+    public int lastHitTargetNumber;
+    
     private void Start()
     {
         refs = References.Refs;
@@ -33,31 +36,53 @@ public class DoorScript : MonoBehaviour
         doorLeftGoal = doorLeft.transform.position - offset;
         doorRightGoal = doorRight.transform.position + offset;
         
+        if (!isStartRoomDoor)
+            SetUpTargetDoor();
+        
+        if (isStartRoomDoor)
+            SetUpStartRoomDoor();
+    }
+
+    private void SetUpTargetDoor()
+    {
+        refs.gameLogic.onResetScene += ResetDoor;
+        
         SetUpTargets();
     }
 
     private void SetUpTargets()
     {
-        if (isStartRoomDoor)
-            SetUpStartRoomDoor();
-
-        
+        RandomizeTargetPositions();
     }
 
+    private void RandomizeTargetPositions()
+    {
+        //Get the positions of all the targets of the door
+        var availableTargetPositions = 
+            targets.Select(target => target.gameObject.transform.localPosition).ToList();
+        
+        //Assign every target a random position out of the target positions
+        for (var i = targets.Length - 1; i >= 0; i--)
+        {
+            var j = Random.Range(0, i + 1);
+            targets[i].transform.localPosition = availableTargetPositions[j];
+            availableTargetPositions.RemoveAt(j);
+        }
+    }
+    
     private void SetUpStartRoomDoor()
     {
-        //The start room door doesn't have targets
-        foreach (var target in targets)
-            target.SetActive(false);
-
         refs.gameLogic.onPlay += () => OpenDoor(1.2f);
-        refs.gameLogic.onCompleted += CloseDoor;
+        refs.gameLogic.onResetScene += ResetDoor;
     }
 
-    private void OpenDoor(float waitTime)
+    public void OpenDoor(float waitTime)
     {
         //Start coroutine to open the door
         StartCoroutine(OpenDoorRoutine(waitTime));
+        
+        //Until there are actual objectives
+        CompleteObjective();
     }
 
     private IEnumerator OpenDoorRoutine(float waitTime)
@@ -93,10 +118,17 @@ public class DoorScript : MonoBehaviour
         doorRight.transform.position = doorRightGoal;
     }
 
-    private void CloseDoor()
+    private void ResetDoor()
     {
+        lastHitTargetNumber = 0;
+        
+        StopAllCoroutines();
+        
         //Close the door instantly
         doorLeft.transform.position = doorLeftStart;
         doorRight.transform.position = doorRightStart;
+        
+        if (!isStartRoomDoor)
+            RandomizeTargetPositions();
     }
 }

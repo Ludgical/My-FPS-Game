@@ -7,7 +7,7 @@ public class GunScript : MonoBehaviour
     private Transform delayedFollowPivot;
 
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip gunFiringClip;
+    [SerializeField] private AudioClip gunFiringSound;
 
     private Vector3 gunVelocity;
     private Vector3 oldPivotPosition;
@@ -27,7 +27,7 @@ public class GunScript : MonoBehaviour
         SetZValue();
         
         refs.gameLogic.onPlay += () => gameObject.SetActive(true);
-        refs.gameLogic.onCompleted += () => gameObject.SetActive(false);
+        refs.gameLogic.onResetScene += () => gameObject.SetActive(false);
 
         Settings.Player.FOV.onUpdated += SetZValue;
     }
@@ -92,7 +92,15 @@ public class GunScript : MonoBehaviour
 
     private void Fire()
     {
-        audioSource.PlayOneShot(gunFiringClip);
+        audioSource.PlayOneShot(gunFiringSound);
         refs.playerAnimator.SetTrigger("Fire");
+
+        var raycastStart = refs.camera.transform.position;
+        var raycastDirection = refs.camera.transform.forward;
+        if (Physics.Raycast(raycastStart, raycastDirection, out var raycastHit))
+        {
+            if (raycastHit.collider.TryGetComponent<IHittable>(out var hittable))
+                hittable.OnHit();
+        }
     }
 }

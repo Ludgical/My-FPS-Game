@@ -20,7 +20,7 @@ public class AudioScript : MonoBehaviour
         SetMixerVolume();
         
         refs.gameLogic.onPlay += StopMusic;
-        refs.gameLogic.onCompleted += StartMusic;
+        refs.gameLogic.onResetScene += StartMusic;
 
         Settings.Game.MasterVolume.onUpdated += SetMixerVolume;
     }
