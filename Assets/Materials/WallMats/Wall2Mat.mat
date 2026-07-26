@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ShortWall
+  m_Name: Wall2Mat
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -45,7 +45,7 @@ Material:
     m_TexEnvs:
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: b394f8f06c8af404495e8078fe659bae, type: 3}
-        m_Scale: {x: -1, y: 2.5}
+        m_Scale: {x: 1, y: 2.5}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: 33bd6c6bfaa18ae47969e2bfb7e36dff, type: 3}
@@ -69,7 +69,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: b394f8f06c8af404495e8078fe659bae, type: 3}
-        m_Scale: {x: -1, y: 2.5}
+        m_Scale: {x: 1, y: 2.5}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 2800000, guid: 1db06b54e8e925147a5642d9fe3a08b6, type: 3}

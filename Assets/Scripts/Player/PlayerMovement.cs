@@ -10,9 +10,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CapsuleCollider collider;
     [SerializeField] public Rigidbody rb;
     
-    private float cameraXRotation;
-    private float playerYRotation;
-    
     private Coroutine crouchCoroutine;
     private float cameraYVelocity;
     
@@ -143,11 +140,15 @@ public class PlayerMovement : MonoBehaviour
         var mouseY = input.LookInput.y * realSensitivity;
         
         //Rotate the camera up and down locally
+        var cameraXRotation = refs.camera.transform.localRotation.eulerAngles.x;
+        if (cameraXRotation >= 270)
+            cameraXRotation -= 360;
         cameraXRotation -= mouseY;
         cameraXRotation = Mathf.Clamp(cameraXRotation, -90, 90);
         refs.camera.transform.localRotation = Quaternion.Euler(cameraXRotation, 0, 0);
         
         //Rotate the player right and left
+        var playerYRotation = transform.rotation.eulerAngles.y;
         playerYRotation += mouseX;
         transform.rotation = Quaternion.Euler(0, playerYRotation, 0);
     }

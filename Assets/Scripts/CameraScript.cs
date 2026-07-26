@@ -9,12 +9,18 @@ public class CameraScript : MonoBehaviour
         refs = References.Refs;
 
         SetFOV();
-        
         Settings.Player.FOV.onUpdated += SetFOV;
+        
+        refs.gameLogic.onResetScene += ResetCamera;
     }
 
     private void SetFOV()
     {
         refs.camera.fieldOfView = Settings.Player.FOV.Value;
+    }
+
+    private void ResetCamera()
+    {
+        refs.camera.transform.localRotation = Quaternion.identity;
     }
 }

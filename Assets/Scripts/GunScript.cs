@@ -8,6 +8,7 @@ public class GunScript : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip gunFiringSound;
+    [SerializeField] private MeshRenderer[] renderers;
 
     private Vector3 gunVelocity;
     private Vector3 oldPivotPosition;
@@ -22,12 +23,20 @@ public class GunScript : MonoBehaviour
         
         gunPivot = refs.gunPivot;
         delayedFollowPivot = refs.delayedFollowPivot;
+        renderers = GetComponentsInChildren<MeshRenderer>();
         
-        gameObject.SetActive(false);
+        SetVisible(false);
         SetZValue();
         
-        refs.gameLogic.onPlay += () => gameObject.SetActive(true);
-        refs.gameLogic.onResetScene += () => gameObject.SetActive(false);
+        refs.gameLogic.onPlay += () =>
+        {
+            SetVisible(true);
+        };
+        refs.gameLogic.onResetScene += () =>
+        {
+            SetVisible(false);
+            ResetGun();
+        };
 
         Settings.Player.FOV.onUpdated += SetZValue;
     }
@@ -84,7 +93,6 @@ public class GunScript : MonoBehaviour
         //Can't fire if enough time hasn't passed since the last shot
         if (timeSinceLastShot < refs.gunData.cooldown)
             return;
-        //Reset the timer
         timeSinceLastShot = 0;
         
         Fire();
@@ -95,12 +103,28 @@ public class GunScript : MonoBehaviour
         audioSource.PlayOneShot(gunFiringSound);
         refs.playerAnimator.SetTrigger("Fire");
 
-        var raycastStart = refs.camera.transform.position;
-        var raycastDirection = refs.camera.transform.forward;
-        if (Physics.Raycast(raycastStart, raycastDirection, out var raycastHit))
+        //Raycast forward from the camera and check if it hit something
+        var start = refs.camera.transform.position;
+        var direction = refs.camera.transform.forward;
+        if (Physics.Raycast(start, direction, out var hit))
         {
-            if (raycastHit.collider.TryGetComponent<IHittable>(out var hittable))
+            //If it hit an IHittable, call the IHittable's OnHit method
+            if (hit.collider.TryGetComponent<IHittable>(out var hittable))
                 hittable.OnHit();
         }
+    }
+
+    private void SetVisible(bool visible)
+    {
+        foreach (var renderer in renderers)
+            renderer.enabled = visible;
+    }
+
+    private void ResetGun()
+    {
+        timeSinceLastShot = 0;
+        gunVelocity = Vector3.zero;
+        delayedFollowPivot.localPosition = Vector3.zero;
+        delayedFollowPivot.localRotation = Quaternion.identity;
     }
 }

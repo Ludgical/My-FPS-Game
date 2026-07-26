@@ -6,21 +6,43 @@ public class GameUIScript : MonoBehaviour
 {
     private References refs;
     
+    [SerializeField] private Button timedButton;
+    [SerializeField] private Button tutorialButton;
     [SerializeField] private Image fadeImage;
 
     private void Start()
     {
         refs = References.Refs;
         
-        fadeImage.gameObject.SetActive(false);
-        
-        var data = refs.gameData;
+        SetUpPlayButtons();
+
+        SetUpFading();
+    }
+
+    private void SetUpPlayButtons()
+    {
+        timedButton.onClick.AddListener(() =>
+        {
+            refs.gameLogic.onPlay?.Invoke();
+        });
+        tutorialButton.onClick.AddListener(() =>
+        {
+            refs.gameLogic.onPlay?.Invoke();
+        });
+    }
+
+    private void SetUpFading()
+    {
         refs.gameLogic.onCompleted += () =>
         {
             //Fade the screen to black so that the scene resets once it's completely black
-            FadeToBlack(data.completedToResetDelay - data.fadeToBlackDuration - 0.1f, data.fadeToBlackDuration);
+            FadeToBlack(
+                refs.gameData.completedToResetDelay - refs.gameData.fadeToBlackDuration - 0.1f, 
+                refs.gameData.fadeToBlackDuration);
             //Fade the screen back once the scene has reset
-            FadeFromBlack(data.completedToResetDelay + 0.1f, data.fadeFromBlackDuration);
+            FadeFromBlack(
+                refs.gameData.completedToResetDelay + 0.1f, 
+                refs.gameData.fadeFromBlackDuration);
         };
     }
 
@@ -38,10 +60,6 @@ public class GameUIScript : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
-        //Show the image once the fading starts
-        if (toBlack)
-            fadeImage.gameObject.SetActive(true);
-
         var color = fadeImage.color;
 
         //Fade the alpha value of the color in / out over the duration
@@ -57,9 +75,5 @@ public class GameUIScript : MonoBehaviour
         //Set the alpha to the exact value it should be
         color.a = toBlack ? 1f : 0f;
         fadeImage.color = color;
-        
-        //Hide the image once the fading stops
-        if (!toBlack)
-            fadeImage.gameObject.SetActive(false);
     }
 }

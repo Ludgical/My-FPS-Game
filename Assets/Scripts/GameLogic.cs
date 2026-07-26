@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameLogic : MonoBehaviour
 {
@@ -10,24 +9,12 @@ public class GameLogic : MonoBehaviour
     public Action onPlay;
     public Action onResetScene;
     public Action onCompleted;
-    
-    [SerializeField] private Button timedButton;
-    [SerializeField] private Button tutorialButton;
 
     public bool gameIsOn;
 
     private void Start()
     {
         refs = References.Refs;
-        
-        timedButton.onClick.AddListener(() =>
-        {
-            onPlay?.Invoke();
-        });
-        tutorialButton.onClick.AddListener(() =>
-        {
-            onPlay?.Invoke();
-        });
         
         onPlay += () =>
         {

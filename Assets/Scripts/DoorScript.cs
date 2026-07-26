@@ -2,7 +2,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class DoorScript : Objective
+public class DoorScript : MonoBehaviour
 {
     private References refs;
     
@@ -21,10 +21,12 @@ public class DoorScript : Objective
 
     public int lastHitTargetNumber;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         refs = References.Refs;
+        
+        //Until there are actual objectives
+        refs.objectiveTracker.AddObjective();
         
         //Where the sides of the door started
         doorLeftStart = doorLeft.transform.position;
@@ -83,7 +85,7 @@ public class DoorScript : Objective
         StartCoroutine(OpenDoorRoutine(waitTime));
         
         //Until there are actual objectives
-        CompleteObjective();
+        refs.objectiveTracker.CompleteObjective();
     }
 
     private IEnumerator OpenDoorRoutine(float waitTime)
