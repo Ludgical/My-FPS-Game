@@ -16,8 +16,6 @@ public class PlayerScript : MonoBehaviour
     private void Start()
     {
         refs = References.Refs;
-
-        refs.gameLogic.onResetScene += ResetPlayer;
     }
 
     private void FixedUpdate()
@@ -38,16 +36,6 @@ public class PlayerScript : MonoBehaviour
             refs.playerAnimator.SetBool("IsRunning", showRunAnimation);
             runAnimationIsOn = showRunAnimation;
         }
-    }
-    
-    private void ResetPlayer()
-    {
-        //Move the player back to the start position and rotation and reset the velocity
-        transform.position = new Vector3(0, 0, -6);
-        rb.position = new Vector3(0, 0, -6);
-        transform.rotation = Quaternion.identity;
-        rb.rotation = Quaternion.identity;
-        rb.linearVelocity = new Vector3(0, 0, 0);
     }
     
     public void SetIsOnGround(bool onGround)

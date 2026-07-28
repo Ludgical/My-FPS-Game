@@ -6,6 +6,7 @@ public class References : MonoBehaviour
     public static References Refs;
     
     public GameLogic gameLogic;
+    public StartUIScript startUI;
     public ObjectiveTracker objectiveTracker;
     public PlayerScript player;
     public Animator playerAnimator;

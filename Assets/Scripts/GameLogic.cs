@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLogic : MonoBehaviour
 {
     private References refs;
     
     public Action onPlay;
-    public Action onResetScene;
     public Action onCompleted;
 
     public bool gameIsOn;
@@ -16,30 +16,29 @@ public class GameLogic : MonoBehaviour
     {
         refs = References.Refs;
         
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        
         onPlay += () =>
         {
             gameIsOn = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         };
-        onResetScene += () =>
-        {
-            gameIsOn = false;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        };
     }
 
     public void OnGameCompleted()
     {
         onCompleted?.Invoke();
-        StartCoroutine(InvokeOnCompleted());
+        StartCoroutine(ResetScene());
         return;
 
-        IEnumerator InvokeOnCompleted()
+        IEnumerator ResetScene()
         {
             yield return new WaitForSeconds(refs.gameData.completedToResetDelay);
-            onResetScene?.Invoke();
+            Settings.Save();
+            SessionData.FirstTime = false;
+            SceneManager.LoadScene("GameScene");
         }
     }
 }

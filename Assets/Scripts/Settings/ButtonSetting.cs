@@ -17,13 +17,14 @@ public class ButtonSetting : Setting
         
         //When the button is pressed, call the OnSettingChanged method
         button.onClick.AddListener(OnSettingChanged);
+        button.onClick.AddListener(() => References.Refs.startUI.OnButtonPressed());
         
         Initialize(name, defaultValue ? 1 : 0);
     }
 
     protected override void SetInitialValue(float defaultValue)
     {
-        var savedValue = PlayerPrefs.GetFloat(Name, -1);
+        var savedValue = GetSavedValue();
         FloatValue = savedValue >= 0 ? savedValue : defaultValue;
         Value = FloatValue != 0;
     }

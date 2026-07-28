@@ -15,5 +15,5 @@ MonoBehaviour:
   positionOffsetMultiplier: -0.2
   rotationOffsetMultiplier: -1
   positionOffsetSmoothTime: 0.05
-  rotationOffsetSpeed: 16
+  rotationOffsetSpeed: 12
   cooldown: 0.1

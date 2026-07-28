@@ -8,7 +8,6 @@ public class AudioScript : MonoBehaviour
     
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource backgroundMusicSource;
-    [SerializeField] private AudioClip backgroundMusic;
     
     private Coroutine changeVolumeRoutine;
     
@@ -20,7 +19,6 @@ public class AudioScript : MonoBehaviour
         SetMixerVolume();
         
         refs.gameLogic.onPlay += StopMusic;
-        refs.gameLogic.onResetScene += StartMusic;
 
         Settings.Game.MasterVolume.onUpdated += SetMixerVolume;
     }
