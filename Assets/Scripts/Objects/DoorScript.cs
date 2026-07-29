@@ -18,6 +18,7 @@ public class DoorScript : MonoBehaviour
     private Vector3 offset;
     private Vector3 doorLeftGoal;
     private Vector3 doorRightGoal;
+    private ParticleSystem[] particleSystems;
 
     public int lastHitTargetNumber;
 
@@ -38,6 +39,8 @@ public class DoorScript : MonoBehaviour
         //Where the sides of the door should be when the door is open
         doorLeftGoal = doorLeft.transform.position - offset;
         doorRightGoal = doorRight.transform.position + offset;
+        
+        particleSystems = gameObject.GetComponentsInChildren<ParticleSystem>();
         
         if (!isStartRoomDoor)
             SetUpTargetDoor();
@@ -90,6 +93,8 @@ public class DoorScript : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         
         audioSource.PlayOneShot(doorOpenSound);
+        foreach (var particleSystem in particleSystems)
+            particleSystem.Play();
         
         //For the smooth damp
         var leftVelocity = Vector3.zero;
@@ -116,19 +121,5 @@ public class DoorScript : MonoBehaviour
         //Put the sides exactly where they're supposed to be
         doorLeft.transform.position = doorLeftGoal;
         doorRight.transform.position = doorRightGoal;
-    }
-
-    private void ResetDoor()
-    {
-        lastHitTargetNumber = 0;
-        
-        StopAllCoroutines();
-        
-        //Close the door instantly
-        doorLeft.transform.position = doorLeftStart;
-        doorRight.transform.position = doorRightStart;
-        
-        if (!isStartRoomDoor)
-            RandomizeTargetPositions();
     }
 }
