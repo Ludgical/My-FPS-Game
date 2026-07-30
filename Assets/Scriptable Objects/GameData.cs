@@ -8,5 +8,6 @@ namespace Scriptable_Objects
         public float completedToResetDelay;
         public float fadeToBlackDuration;
         public float fadeFromBlackDuration;
+        public float wallY;
     }
 }

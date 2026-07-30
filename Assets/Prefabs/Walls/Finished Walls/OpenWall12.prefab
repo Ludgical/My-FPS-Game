@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1933784537971393362}
   m_Layer: 0
-  m_Name: InDoorGap12
+  m_Name: OpenWall12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

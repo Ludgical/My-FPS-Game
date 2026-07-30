@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b267c511149fee246a1c364c023fc8fa, type: 3}
   m_Name: Game Data
   m_EditorClassIdentifier: Assembly-CSharp::Scriptable_Objects.GameData
-  completedToResetDelay: 3
-  fadeToBlackDuration: 1.3
+  completedToResetDelay: 2
+  fadeToBlackDuration: 1
   fadeFromBlackDuration: 0.8
+  wallY: 6
