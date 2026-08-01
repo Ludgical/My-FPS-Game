@@ -21,7 +21,7 @@ public class TargetScript : MonoBehaviour, IHittable
     private void Start()
     {
         //The start room door doesn't have targets
-        if (parentDoor.isStartRoomDoor)
+        if (!parentDoor.isTargetDoor)
         {
             Destroy(gameObject);
             return;
@@ -29,7 +29,6 @@ public class TargetScript : MonoBehaviour, IHittable
         
         //The materials on the target
         targetMaterials = renderer.materials.ToList();
-        //Copy and save the red on and white on materials for when the target resets
     }
 
     public void OnHit()

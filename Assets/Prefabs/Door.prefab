@@ -62,9 +62,11 @@ MonoBehaviour:
   - {fileID: 952698932028252388}
   - {fileID: 1144423871704843511}
   - {fileID: 7958059950490080915}
-  isStartRoomDoor: 0
   audioSource: {fileID: 6038751744987100229}
   doorOpenSound: {fileID: 8300000, guid: 116d73ce85f7ce94aad923f76a311375, type: 3}
+  isStartRoomDoor: 0
+  isTargetDoor: 0
+  isChallengeRoomDoor: 0
   lastHitTargetNumber: 0
 --- !u!82 &6038751744987100229
 AudioSource:

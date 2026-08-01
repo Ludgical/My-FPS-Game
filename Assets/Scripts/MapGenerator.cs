@@ -16,19 +16,19 @@ public class MapGenerator : MonoBehaviour
     private const float CenterToWall = 20.5f;
     
     /// Distance from the center of a challenge room to a door of the challenge room
-    private const float CenterToDoor = CenterToWall + 1;
+    public const float CenterToDoor = CenterToWall + 1;
     
     /// Distance from the center of a challenge room to the center of an adjacent challenge room
     private const float CenterToCenter = CenterToDoor * 2;
     
     /// Left, Right, Up, Down
-    private static readonly Vector2[] Directions = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1) };
+    public static readonly Vector2[] Directions = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1) };
     
     /// All the challenge rooms that have been created
-    private static readonly List<Room> rooms = new ();
+    private static List<Room> rooms = new ();
     
     /// Rectangles that cover the space that is occupied by rooms
-    private static readonly List<Rectangle> occupiedSpace = new ();
+    private static List<Rectangle> occupiedSpace = new ();
     
     private class Room
     {
@@ -38,15 +38,17 @@ public class MapGenerator : MonoBehaviour
         public readonly float x;
         public readonly float y;
         public readonly int depth;
+        public readonly Vector2 entranceSide;
         // Side of the room : prefab
         public readonly Dictionary<Vector2, GameObject> walls = new();
         public readonly Dictionary<Vector2, GameObject> doors = new();
 
-        public Room(float x, float y, int depth, Vector2? entranceSide = null)
+        public Room(float x, float y, int depth, Vector2 entranceSide)
         {
             this.x = x;
             this.y = y;
             this.depth = depth;
+            this.entranceSide = entranceSide;
             foreach (var direction in Directions)
             {
                 walls[direction] = null;
@@ -58,8 +60,7 @@ public class MapGenerator : MonoBehaviour
 
             //The challenge rooms coming from the main room
             //have an open wall where the door is
-            if (entranceSide != null)
-                CreateOpenWall(entranceSide.Value, createDoor: false);
+            CreateOpenWall(entranceSide, createDoor: false);
         }
         
         /// Create a wall with a gap in the middle on the <c>direction</c> side of the room.
@@ -113,7 +114,9 @@ public class MapGenerator : MonoBehaviour
         private readonly float x2;
         private readonly float y1;
         private readonly float y2;
-
+        
+        /// Create a rectangle where <c>x1</c> and <c>x2</c> are the x-coordinates of the vertical sides and
+        /// <c>y1</c> and <c>y2</c> are the y-coordinates of the horizontal sides
         public Rectangle(float x1, float x2, float y1, float y2)
         {
             this.x1 = Mathf.Min(x1, x2);
@@ -121,7 +124,8 @@ public class MapGenerator : MonoBehaviour
             this.y1 = Mathf.Min(y1, y2);
             this.y2 = Mathf.Max(y1, y2);
         }
-
+        
+        /// Create a square centered at <c>x</c>, <c>y</c> that is the size of a challenge room
         public Rectangle(float x, float y) : this(
             x - CenterToDoor, x + CenterToDoor, 
             y - CenterToDoor, y + CenterToDoor) { }
@@ -140,19 +144,26 @@ public class MapGenerator : MonoBehaviour
         Room.OpenWallPrefab = openWallPrefab;
         
         GenerateMap();
+
+        GenerateChallenges();
     }
     
     /// Generate a system of rooms where the challenges will be
     private void GenerateMap()
     {
-        //Create the initial rooms
-        rooms.AddRange(new Room[]{
-            new (-48f, 37, depth: 1, entranceSide: new Vector2(1, 0)),
-            new (48f, 37, depth: 1, entranceSide: new Vector2(-1, 0)),
-            new (0, 85f, depth: 1, entranceSide: new Vector2(0, -1))});
-        
         //Make sure no rooms generate in the start room or main room
-        occupiedSpace.Add(new Rectangle(-25.5f, 25.5f, -11, 62.5f));
+        occupiedSpace = new Rectangle[]
+        {
+            new (-25.5f, 25.5f, -11, 62.5f)
+        }.ToList();
+        
+        //Create the initial challenge rooms
+        rooms = new Room[]
+        {
+            new (-48, 37, depth: 1, entranceSide: new Vector2(1, 0)),
+            new (48, 37, depth: 1, entranceSide: new Vector2(-1, 0)),
+            new (0, 85, depth: 1, entranceSide: new Vector2(0, -1))
+        }.ToList();
         
         //Generate 4 new rooms
         for (var i = 0; i < 4; i++)
@@ -165,9 +176,6 @@ public class MapGenerator : MonoBehaviour
         {
             CreateWalls(room);
         }
-        
-        rooms.Clear();
-        occupiedSpace.Clear();
     }
     
     /// Generate a room and a door coming out from an already existing room
@@ -217,7 +225,7 @@ public class MapGenerator : MonoBehaviour
     /// Create a room with properties from a branch
     private void GenerateRoomFromBranch(Branch branch)
     {
-        var room = new Room(branch.x, branch.y, branch.parent.depth + 1);
+        var room = new Room(branch.x, branch.y, branch.parent.depth + 1, branch.direction * -1);
 
         //Create an open wall and a door in the parent of the branch going into the new room
         branch.parent.CreateOpenWall(branch.direction, createDoor: true);
@@ -264,5 +272,24 @@ public class MapGenerator : MonoBehaviour
         if (direction == Directions[3])
             return 0;
         throw new Exception("Invalid direction: " + direction);
+    }
+
+    private void GenerateChallenges()
+    {
+        var roomAmount = rooms.Count;
+        var positions = new Vector2[roomAmount];
+        var entranceSides = new Vector2[roomAmount];
+        var doors = new List<DoorScript>[roomAmount];
+
+        for (var i = 0; i < roomAmount; i++)
+        {
+            var room = rooms[i];
+            positions[i] = new Vector2(room.x, room.y);
+            entranceSides[i] = room.entranceSide;
+            doors[i] = room.doors.Values.Where(door => door != null)
+                .Select(door => door.GetComponent<DoorScript>()).ToList();
+        }
+        
+        refs.challengeGenerator.GenerateChallenges(positions, entranceSides, doors);
     }
 }

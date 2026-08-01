@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DoorScript : MonoBehaviour
 {
@@ -9,10 +11,11 @@ public class DoorScript : MonoBehaviour
     [SerializeField] private GameObject doorLeft;
     [SerializeField] private GameObject doorRight;
     [SerializeField] private TargetScript[] targets;
-    [SerializeField] public bool isStartRoomDoor;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip doorOpenSound;
-    
+    [SerializeField] public bool isStartRoomDoor;
+    [SerializeField] public bool isTargetDoor;
+
     private Vector3 doorLeftStart;
     private Vector3 doorRightStart;
     private Vector3 offset;
@@ -20,14 +23,11 @@ public class DoorScript : MonoBehaviour
     private Vector3 doorRightGoal;
     private ParticleSystem[] particleSystems;
 
-    public int lastHitTargetNumber;
+    [NonSerialized] public int lastHitTargetNumber;
 
     private void Start()
     {
         refs = References.Refs;
-        
-        //Until there are actual objectives
-        refs.objectiveTracker.AddObjective();
         
         //Where the sides of the door started
         doorLeftStart = doorLeft.transform.position;
@@ -41,25 +41,20 @@ public class DoorScript : MonoBehaviour
         doorRightGoal = doorRight.transform.position + offset;
         
         particleSystems = gameObject.GetComponentsInChildren<ParticleSystem>();
-        
-        if (!isStartRoomDoor)
-            SetUpTargetDoor();
-        
+
         if (isStartRoomDoor)
             SetUpStartRoomDoor();
+        
+        if (isTargetDoor)
+            SetUpTargetDoor();
+    }
+    
+    private void SetUpStartRoomDoor()
+    {
+        refs.gameLogic.onPlay += () => OpenDoor(1.2f);
     }
 
     private void SetUpTargetDoor()
-    {
-        SetUpTargets();
-    }
-
-    private void SetUpTargets()
-    {
-        RandomizeTargetPositions();
-    }
-
-    private void RandomizeTargetPositions()
     {
         //Get the positions of all the targets of the door
         var availableTargetPositions = 
@@ -73,19 +68,10 @@ public class DoorScript : MonoBehaviour
             availableTargetPositions.RemoveAt(j);
         }
     }
-    
-    private void SetUpStartRoomDoor()
-    {
-        refs.gameLogic.onPlay += () => OpenDoor(1.2f);
-    }
 
     public void OpenDoor(float waitTime)
     {
-        //Start coroutine to open the door
         StartCoroutine(OpenDoorRoutine(waitTime));
-        
-        //Until there are actual objectives
-        refs.objectiveTracker.CompleteObjective();
     }
 
     private IEnumerator OpenDoorRoutine(float waitTime)
@@ -93,6 +79,7 @@ public class DoorScript : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         
         audioSource.PlayOneShot(doorOpenSound);
+        
         foreach (var particleSystem in particleSystems)
             particleSystem.Play();
         

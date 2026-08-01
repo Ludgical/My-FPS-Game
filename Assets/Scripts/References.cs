@@ -7,8 +7,8 @@ public class References : MonoBehaviour
     
     public GameLogic gameLogic;
     public StartUIScript startUI;
-    public MapGenerator mapGenerator;
-    public ObjectiveTracker objectiveTracker;
+    public ChallengeTracker challengeTracker;
+    public ChallengeGenerator challengeGenerator;
     public PlayerScript player;
     public Animator playerAnimator;
     public Camera camera;

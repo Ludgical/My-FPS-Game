@@ -270,6 +270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 4205302356200105730, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: isTargetDoor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6038751744987100229, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
       propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
       value: 1
@@ -2137,6 +2141,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeftDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 4205302356200105730, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: isTargetDoor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8637996273339450070, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -26.5
@@ -3855,6 +3863,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 4205302356200105730, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: isTargetDoor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8637996273339450070, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4783,8 +4795,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gameLogic: {fileID: 249302720}
   startUI: {fileID: 897728683}
-  mapGenerator: {fileID: 0}
-  objectiveTracker: {fileID: 2128519083}
+  challengeTracker: {fileID: 2128519083}
+  challengeGenerator: {fileID: 1650499803}
   player: {fileID: 1736651616}
   playerAnimator: {fileID: 1736651615}
   camera: {fileID: 198663629}
@@ -6151,6 +6163,58 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 923736000}
   m_SourcePrefab: {fileID: 100100000, guid: cd976b636adfaeb4988ea2a014ea2581, type: 3}
+--- !u!1 &1650499802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1650499804}
+  - component: {fileID: 1650499803}
+  m_Layer: 0
+  m_Name: Challenge Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1650499803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650499802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a16c53120fb75646b6e418b0084b90c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  challengePrefabs:
+  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
+  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
+  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
+  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
+  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
+  - {fileID: 9214737076107771871, guid: 839edfd1df0df174a9140df63dab3db7, type: 3}
+  - {fileID: 9214737076107771871, guid: 839edfd1df0df174a9140df63dab3db7, type: 3}
+--- !u!4 &1650499804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650499802}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1698694294
 GameObject:
   m_ObjectHideFlags: 0
@@ -6429,7 +6493,7 @@ GameObject:
   - component: {fileID: 1736651616}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6938,7 +7002,7 @@ GameObject:
   - component: {fileID: 2034767675}
   - component: {fileID: 2034767674}
   m_Layer: 0
-  m_Name: MapGenerator
+  m_Name: Map Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7210,7 +7274,7 @@ GameObject:
   - component: {fileID: 2128519084}
   - component: {fileID: 2128519083}
   m_Layer: 0
-  m_Name: Objective Tracker
+  m_Name: Challenge Tracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7225,7 +7289,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2128519082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2194612724204dce978c9493e25154ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e7101eb10ec4040ae0637f3f26234ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveTracker
 --- !u!4 &2128519084
@@ -7511,5 +7575,6 @@ SceneRoots:
   - {fileID: 977014737}
   - {fileID: 2128519084}
   - {fileID: 2034767675}
+  - {fileID: 1650499804}
   - {fileID: 1302023023}
   - {fileID: 1698694297}

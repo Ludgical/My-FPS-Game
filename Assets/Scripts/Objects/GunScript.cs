@@ -102,9 +102,12 @@ public class GunScript : MonoBehaviour
         //Raycast forward from the camera and check if it hit something
         var start = refs.camera.transform.position;
         var direction = refs.camera.transform.forward;
-        if (Physics.Raycast(start, direction, out var hit))
+        var raycast = Physics.Raycast(
+            start, direction, out var hit, 
+            500, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        if (raycast)
         {
-            //If it hit an IHittable, call the IHittable's OnHit method
+            //If the raycast hit an IHittable, call the IHittable's OnHit method
             if (hit.collider.TryGetComponent<IHittable>(out var hittable))
                 hittable.OnHit();
             
