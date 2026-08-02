@@ -17,7 +17,7 @@ public class GameUIScript : MonoBehaviour
         SetUpFading();
         SetUpCrosshair();
 
-        if (!SessionData.FirstTime)
+        if (!GameLogic.FirstTime)
         {
             //Fade the screen from black once the scene has reset
             //as long as it's not the first round this session

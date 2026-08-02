@@ -11,6 +11,7 @@ public class GameLogic : MonoBehaviour
     public Action onCompleted;
 
     public bool gameIsOn;
+    public static bool FirstTime = true;
 
     private void Start()
     {
@@ -37,7 +38,7 @@ public class GameLogic : MonoBehaviour
         {
             yield return new WaitForSeconds(refs.gameData.completedToResetDelay);
             Settings.Save();
-            SessionData.FirstTime = false;
+            FirstTime = false;
             SceneManager.LoadScene("GameScene");
         }
     }

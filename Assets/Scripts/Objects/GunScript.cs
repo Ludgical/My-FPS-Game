@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GunScript : MonoBehaviour
@@ -99,19 +100,27 @@ public class GunScript : MonoBehaviour
         audioSource.PlayOneShot(gunFiringSound);
         refs.playerAnimator.SetTrigger("Fire");
 
-        //Raycast forward from the camera and check if it hit something
-        var start = refs.camera.transform.position;
-        var direction = refs.camera.transform.forward;
-        var raycast = Physics.Raycast(
-            start, direction, out var hit, 
-            500, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
-        if (raycast)
+        //Raycast forward from the camera, put everything it hit in an array and sort by distance
+        var ray = new Ray(refs.camera.transform.position, refs.camera.transform.forward);
+        var hits = Physics.RaycastAll(ray);
+        Array.Sort(hits, (hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
+        
+        //Go over every hit, starting with the closest
+        foreach (var hit in hits)
         {
-            //If the raycast hit an IHittable, call the IHittable's OnHit method
             if (hit.collider.TryGetComponent<IHittable>(out var hittable))
+            {
+                //If the raycast hit an IHittable, call the IHittable's OnHit method
                 hittable.OnHit();
+            }
+            else if (hit.collider.isTrigger)
+            {
+                //If the raycast hit a trigger collider, check the next thing it hit
+                continue;
+            }
             
             OnHitParticles(hit.point, hit.normal);
+            break;
         }
     }
 

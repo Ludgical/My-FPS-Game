@@ -5,19 +5,19 @@ public abstract class Challenge : MonoBehaviour
 {
     private References refs;
     
-    public bool challengeStarted { get; private set; }
-    private bool challengeCompleted;
-    
     /// The doors that should be opened when the challenge is completed
     [NonSerialized] public DoorScript[] openOnCompleted;
+
+    public bool challengeStarted { get; private set; }
+    private bool challengeCompleted;
 
     private void Start()
     {
         refs = References.Refs;
 
         refs.challengeTracker.AddChallenge();
-        
         SetUpTrigger();
+        InitializeChallenge();
     }
 
     /// Create and set up the trigger collider to trigger when you enter to room with this challenge
@@ -25,7 +25,7 @@ public abstract class Challenge : MonoBehaviour
     {
         var onEnterRoomTrigger = gameObject.AddComponent<BoxCollider>();
         onEnterRoomTrigger.isTrigger = true;
-        onEnterRoomTrigger.center = new Vector3(0, 6, -MapGenerator.CenterToDoor);
+        onEnterRoomTrigger.center = new Vector3(0, 6, -MapGenerator.CenterToDoor - 0.5f);
         onEnterRoomTrigger.size = new Vector3(10, 12, 0);
     }
     // When something enters the trigger at the door
@@ -38,6 +38,8 @@ public abstract class Challenge : MonoBehaviour
         challengeStarted = true;
     }
     
+    /// Called when the challenge is created
+    protected abstract void InitializeChallenge();
     /// Called when the player enters the room with this challenge
     protected abstract void StartChallenge();
     

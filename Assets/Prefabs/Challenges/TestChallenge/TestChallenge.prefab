@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b8cc482114b649bf8495787f5130c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChallengeCubeScript
-  testChallenge: {fileID: 5008871777452877544}
+  challenge: {fileID: 5008871777452877544}
 --- !u!1 &9214737076107771871
 GameObject:
   m_ObjectHideFlags: 0

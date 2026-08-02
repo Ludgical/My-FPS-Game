@@ -3,7 +3,9 @@
 public class TestChallenge : Challenge
 {
     [SerializeField] private GameObject cube;
-    
+
+    protected override void InitializeChallenge() { }
+
     protected override void StartChallenge()
     {
         cube.transform.localPosition = new Vector3(0, 5, 0);

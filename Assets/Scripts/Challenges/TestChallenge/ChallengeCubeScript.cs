@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class ChallengeCubeScript : MonoBehaviour, IHittable
 {
-     [SerializeField] private TestChallenge testChallenge;
+     [SerializeField] private TestChallenge challenge;
      
      public void OnHit()
      {
-          if (!testChallenge.challengeStarted)
+          if (!challenge.challengeStarted)
                return;
           
-          testChallenge.CubeHit();
+          challenge.CubeHit();
      }
 }
