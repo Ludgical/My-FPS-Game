@@ -86,7 +86,7 @@ public class Crystal : MonoBehaviour, IHittable
             transform.position.x, transform.position.y + 5, transform.position.z);
         
         //Direction from the center to the far goal
-        var farGoalOffset = center - aboveGoal - new Vector3(0, 5, 0);
+        var farGoalOffset = center - aboveGoal - new Vector3(0, 6, 0);
         //Position across the center of the room from the perspective of the crystal
         var farGoal = center + farGoalOffset * 3;
         

@@ -9,7 +9,7 @@ public abstract class Challenge : MonoBehaviour
     [NonSerialized] public DoorScript[] openOnCompleted;
 
     public bool challengeStarted { get; private set; }
-    private bool challengeCompleted;
+    protected bool challengeCompleted;
 
     private void Start()
     {
@@ -25,7 +25,7 @@ public abstract class Challenge : MonoBehaviour
     {
         var onEnterRoomTrigger = gameObject.AddComponent<BoxCollider>();
         onEnterRoomTrigger.isTrigger = true;
-        onEnterRoomTrigger.center = new Vector3(0, 6, -MapGenerator.CenterToDoor - 0.5f);
+        onEnterRoomTrigger.center = new Vector3(0, 6, -refs.gameData.CenterToDoor - 0.5f);
         onEnterRoomTrigger.size = new Vector3(10, 12, 0);
     }
     // When something enters the trigger at the door

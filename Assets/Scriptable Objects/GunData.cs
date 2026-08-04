@@ -15,5 +15,7 @@ namespace Scriptable_Objects
         public float rotationOffsetSpeed;
         [Tooltip("Cooldown between shots")]
         public float cooldown;
+        [Tooltip("How much damage every shot deals")]
+        public float damage;
     }
 }

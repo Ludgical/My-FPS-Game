@@ -12,14 +12,9 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject openWallPrefab;
     [SerializeField] private GameObject doorPrefab;
 
-    /// Distance from the center of a challenge room to a wall of the challenge room
-    private const float CenterToWall = 20.5f;
-    
-    /// Distance from the center of a challenge room to a door of the challenge room
-    public const float CenterToDoor = CenterToWall + 1;
-    
-    /// Distance from the center of a challenge room to the center of an adjacent challenge room
-    private const float CenterToCenter = CenterToDoor * 2;
+    private static float CenterToWall;
+    private static float CenterToDoor;
+    private static float CenterToCenter;
     
     /// Left, Right, Up, Down
     public static readonly Vector2[] Directions = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1) };
@@ -142,6 +137,10 @@ public class MapGenerator : MonoBehaviour
         
         Room.DoorPrefab = doorPrefab;
         Room.OpenWallPrefab = openWallPrefab;
+
+        CenterToWall = refs.gameData.CenterToWall;
+        CenterToDoor = refs.gameData.CenterToDoor;
+        CenterToCenter = refs.gameData.CenterToCenter;
         
         GenerateMap();
 

@@ -8,7 +8,12 @@ public class CrystalChallenge : Challenge
     private const float innerR = 6;
     private const float innerR2 = innerR * innerR;
 
+    private const float droneSpawnMinDelay = 3;
+    private const float droneSpawnMaxDelay = 5;
+
     private int crystalsHit;
+    private float droneSpawnDelay;
+    private float timeSinceLastDroneSpawn;
     
     [SerializeField] private GameObject crystalPrefab;
     
@@ -35,13 +40,45 @@ public class CrystalChallenge : Challenge
             crystal.GetComponent<Crystal>().challenge = this;
         }
     }
-    
-    protected override void StartChallenge() { }
+
+    protected override void StartChallenge()
+    {
+        SetDroneSpawnDelay();
+    }
     
     public void OnCrystalCollected()
     {
         crystalsHit += 1;
         if (crystalsHit == crystalAmount)
             CompleteChallenge();
+    }
+
+    private void Update()
+    {
+        if (!challengeStarted || challengeCompleted)
+            return;
+        
+        if (timeSinceLastDroneSpawn >= droneSpawnDelay)
+            SpawnDrone();
+        
+        timeSinceLastDroneSpawn += Time.deltaTime;
+    }
+
+    private void SpawnDrone()
+    {
+        var drone = Drone.SpawnNew(center:transform.position);
+        drone.pathfindMethod = new DronePathfindMethods.TowardsPlayer(drone.transform)
+        {
+            smoothTime = 1.5f,
+            maxSpeed = -1
+        };
+        
+        SetDroneSpawnDelay();
+    }
+
+    private void SetDroneSpawnDelay()
+    {
+        timeSinceLastDroneSpawn = 0;
+        droneSpawnDelay = Random.Range(droneSpawnMinDelay, droneSpawnMaxDelay);
     }
 }

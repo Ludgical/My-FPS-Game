@@ -7,6 +7,8 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private PlayerInput input;
     [SerializeField] private CapsuleCollider collider;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
 
     public bool IsOnGround { get; private set; }
     public bool IsCrouched { get; private set; }
@@ -20,6 +22,8 @@ public class PlayerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Check if the player is on the ground or not
+        CheckIsOnGround();
         //Show the running animation if the player is running
         SetRunAnimation();
     }
@@ -38,10 +42,11 @@ public class PlayerScript : MonoBehaviour
         }
     }
     
-    public void SetIsOnGround(bool onGround)
+    private void CheckIsOnGround()
     {
-        IsOnGround = onGround;
+        IsOnGround = Physics.CheckSphere(groundCheck.position, 1.18f, groundLayer, QueryTriggerInteraction.Ignore);
     }
+    
     public void SetIsCrouched(bool crouched)
     {
         IsCrouched = crouched;
