@@ -4771,6 +4771,8 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: 75639d879b18fba4e85191332406cb01, type: 2}
   gunData: {fileID: 11400000, guid: cbc94dee812f5e040b84e711cba0e15d, type: 2}
   gameData: {fileID: 11400000, guid: 8f34d8606339aa649adfe80563796041, type: 2}
+  droneData: {fileID: 11400000, guid: 7741dcac06f4b9746b4c03a65445f3cc, type: 2}
+  crystalChallengeData: {fileID: 11400000, guid: 0b92bd0a8a487ac428b3e1deffb285bc, type: 2}
 --- !u!4 &1302023023
 Transform:
   m_ObjectHideFlags: 0

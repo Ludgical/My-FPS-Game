@@ -3,13 +3,13 @@ using UnityEngine;
 
 public abstract class Challenge : MonoBehaviour
 {
-    private References refs;
+    protected References refs;
     
     /// The doors that should be opened when the challenge is completed
     [NonSerialized] public DoorScript[] openOnCompleted;
 
     public bool challengeStarted { get; private set; }
-    protected bool challengeCompleted;
+    protected bool challengeCompleted { get; private set; }
 
     private void Start()
     {
@@ -51,8 +51,16 @@ public abstract class Challenge : MonoBehaviour
         challengeCompleted = true;
         
         foreach (var door in openOnCompleted)
-            door.OpenDoor(0);
+            door.OpenDoor();
         
         refs.challengeTracker.CompleteChallenge();
+    }
+    
+    /// Returns the position where challenges can simulate the player being
+    public static Vector3 GetPlayerPosition()
+    {
+        var refs = References.Refs;
+        var offset = new Vector3(0, refs.playerData.colliderHeight - 2, 0);
+        return refs.player.transform.position + offset;
     }
 }

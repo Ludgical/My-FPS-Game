@@ -17,3 +17,4 @@ MonoBehaviour:
   positionOffsetSmoothTime: 0.05
   rotationOffsetSpeed: 12
   cooldown: 0.1
+  damage: 10

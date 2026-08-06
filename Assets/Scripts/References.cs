@@ -18,7 +18,8 @@ public class References : MonoBehaviour
     public PlayerData playerData;
     public GunData gunData;
     public GameData gameData;
-    public GameObject dronePrefab;
+    public DroneData droneData;
+    public CrystalChallengeData crystalChallengeData;
 
     private void Awake()
     {

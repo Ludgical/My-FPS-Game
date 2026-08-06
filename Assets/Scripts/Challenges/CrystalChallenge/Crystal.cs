@@ -1,37 +1,35 @@
 ﻿using System.Collections;
+using Scriptable_Objects;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Crystal : MonoBehaviour, IHittable
 {
+    private References refs;
+    
     private float yRotation;
     private float startY;
     private float timeSeconds;
     private bool isHit;
-
-    /// How many degrees the crystal should rotate every second
-    private float rotationPerSecond = 60;
-
-    /// How long it takes the crystal to bob up and down and go back to its start position
-    private const float bobDurationSeconds = 2.5f;
-
-    /// How much the crystal should move up and down
-    private const float bobHeightMultiplier = 0.2f;
     
     public CrystalChallenge challenge;
+    private CrystalChallengeData cd;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip crystalSound1;
     [SerializeField] private AudioClip crystalSound2;
     
     private void Start()
     {
+        refs = References.Refs;
+        cd = refs.crystalChallengeData;
+        
         if (Random.value < 0.5f)
-            rotationPerSecond = -rotationPerSecond;
+            cd.crystalRotationPerSecond = -cd.crystalRotationPerSecond;
         startY = transform.position.y;
 
         //Set the rotation and time to random values so the crystals aren't synced up
         SetRotationY(Random.Range(0, 359));
-        timeSeconds = Random.value * bobDurationSeconds;
+        timeSeconds = Random.value * cd.crystalBobDurationSeconds;
         SetHeight();
     }
 
@@ -39,9 +37,9 @@ public class Crystal : MonoBehaviour, IHittable
     {
         //Update the time and set the height and rotation
         timeSeconds += Time.deltaTime;
-        timeSeconds %= bobDurationSeconds;
+        timeSeconds %= cd.crystalBobDurationSeconds;
         SetHeight();
-        SetRotationY(yRotation + rotationPerSecond * Time.deltaTime);
+        SetRotationY(yRotation + cd.crystalRotationPerSecond * Time.deltaTime);
     }
 
     /// Set the y position of the crystal to follow a sin curve
@@ -50,9 +48,9 @@ public class Crystal : MonoBehaviour, IHittable
         if (isHit)
             return;
         
-        var degrees = timeSeconds / bobDurationSeconds; //0 - 1
+        var degrees = timeSeconds / cd.crystalBobDurationSeconds; //0 - 1
         var radians = degrees * 2 * Mathf.PI;
-        var newY = startY + Mathf.Sin(radians) * bobHeightMultiplier;
+        var newY = startY + Mathf.Sin(radians) * cd.crystalBobHeightMultiplier;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 
@@ -66,7 +64,7 @@ public class Crystal : MonoBehaviour, IHittable
 
     public void OnHit()
     {
-        if (!challenge.challengeStarted)
+        if (!challenge.challengeStarted || challenge.waiting)
             return;
         isHit = true;
         
@@ -75,6 +73,8 @@ public class Crystal : MonoBehaviour, IHittable
         
         audioSource.pitch = Random.Range(0.9f, 1.1f);
         audioSource.PlayOneShot(Random.value < 0.5f ? crystalSound1 : crystalSound2);
+        
+        challenge.OnCrystalCollected();
     }
 
     private IEnumerator MoveToCenter()
@@ -109,7 +109,6 @@ public class Crystal : MonoBehaviour, IHittable
             yield return null;
         }
         
-        challenge.OnCrystalCollected();
         Destroy(gameObject);
     }
 }

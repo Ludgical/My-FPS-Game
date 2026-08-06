@@ -16,3 +16,4 @@ MonoBehaviour:
   fadeToBlackDuration: 1
   fadeFromBlackDuration: 0.8
   wallY: 6
+  CenterToWall: 20.5

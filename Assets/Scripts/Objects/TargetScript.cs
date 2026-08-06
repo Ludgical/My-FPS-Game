@@ -46,7 +46,7 @@ public class TargetScript : MonoBehaviour, IHittable
         
         //If the fourth target is hit, open the door
         if (targetNumber == 4)
-            parentDoor.OpenDoor(0);
+            parentDoor.OpenDoor();
     }
     
     private IEnumerator OnTargetHitRoutine()

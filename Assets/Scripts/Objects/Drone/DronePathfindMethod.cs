@@ -2,17 +2,34 @@
 
 public abstract class DronePathfindMethod
 {
+    protected readonly Transform droneTransform;
+    
     public float smoothTime;
     /// -1 means no required max speed
     public float maxSpeed;
     protected Vector3 velocity;
+    private bool isFrozen;
     
-    protected readonly Transform droneTransform;
-    
-    protected DronePathfindMethod(Transform droneTransform)
+    protected DronePathfindMethod(Drone drone)
     {
-        this.droneTransform = droneTransform;
+        droneTransform = drone.GetComponentInParent<Transform>();
+    }
+
+    public void Freeze()
+    {
+        velocity = Vector3.zero;
+        isFrozen = true;
+    }
+    public void Unfreeze()
+    {
+        isFrozen = false;
+    }
+
+    public void TryPathfind()
+    {
+        if (!isFrozen)
+            Pathfind();
     }
     
-    public abstract void Pathfind();
+    protected abstract void Pathfind();
 }

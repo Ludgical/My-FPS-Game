@@ -69,7 +69,7 @@ public class DoorScript : MonoBehaviour
         }
     }
 
-    public void OpenDoor(float waitTime)
+    public void OpenDoor(float waitTime = 0)
     {
         StartCoroutine(OpenDoorRoutine(waitTime));
     }

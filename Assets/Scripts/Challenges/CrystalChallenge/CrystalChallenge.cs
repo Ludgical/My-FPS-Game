@@ -1,27 +1,42 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Scriptable_Objects;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CrystalChallenge : Challenge
 {
-    private const int crystalAmount = 20;
-    private const float outerR = 17;
-    private const float outerR2 = outerR * outerR;
-    private const float innerR = 6;
-    private const float innerR2 = innerR * innerR;
-
-    private const float droneSpawnMinDelay = 3;
-    private const float droneSpawnMaxDelay = 5;
-
+    private CrystalChallengeData cd;
+    
     private int crystalsHit;
+    private List<Drone> drones;
     private float droneSpawnDelay;
     private float timeSinceLastDroneSpawn;
-    
+    /// Waiting after the player got hit by a drone
+    public bool waiting;
+
     [SerializeField] private GameObject crystalPrefab;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip restartingSound;
     
     protected override void InitializeChallenge()
     {
+        cd = refs.crystalChallengeData;
+        
+        drones = new List<Drone>();
+        
+        SpawnCrystals();
+    }
+
+    private void SpawnCrystals()
+    {
+        var outerR2 = cd.outerRadius * cd.outerRadius;
+        var innerR2 = cd.innerRadius * cd.innerRadius;
+        
         //Create crystals in a donut shape
-         
-        for (var i = 0; i < crystalAmount; i++)
+        for (var i = 0; i < cd.crystalAmount; i++)
         {
             //Generate polar coordinates
             var angle = Random.value * 2 * Mathf.PI;
@@ -33,8 +48,9 @@ public class CrystalChallenge : Challenge
             var z = radius * Mathf.Sin(angle);
             
             //Generate y coordinate
-            var y = Random.Range(4, 7);
+            var y = Random.Range(cd.crystalSpawnMinY, cd.crystalSpawnMaxY);
             
+            //Create the crystal
             var crystalPos = transform.position + new Vector3(x, y, z);
             var crystal = Instantiate(crystalPrefab, crystalPos, crystalPrefab.transform.rotation);
             crystal.GetComponent<Crystal>().challenge = this;
@@ -46,39 +62,83 @@ public class CrystalChallenge : Challenge
         SetDroneSpawnDelay();
     }
     
-    public void OnCrystalCollected()
+    private void SetDroneSpawnDelay()
     {
-        crystalsHit += 1;
-        if (crystalsHit == crystalAmount)
-            CompleteChallenge();
+        timeSinceLastDroneSpawn = 0;
+        droneSpawnDelay = Random.Range(cd.droneSpawnMinDelay, cd.droneSpawnMaxDelay);
     }
 
     private void Update()
     {
-        if (!challengeStarted || challengeCompleted)
+        if (!challengeStarted || waiting || challengeCompleted)
             return;
-        
+
         if (timeSinceLastDroneSpawn >= droneSpawnDelay)
+        {
             SpawnDrone();
-        
+            SetDroneSpawnDelay();
+        }
+
         timeSinceLastDroneSpawn += Time.deltaTime;
     }
 
     private void SpawnDrone()
     {
         var drone = Drone.SpawnNew(center:transform.position);
-        drone.pathfindMethod = new DronePathfindMethods.TowardsPlayer(drone.transform)
+        
+        drone.pathfinding = new DronePathfindMethods.TowardsPlayer(drone)
         {
-            smoothTime = 1.5f,
-            maxSpeed = -1
+            smoothTime = cd.droneSmoothTime,
+            maxSpeed = cd.droneMaxSpeed,
+            rotationSpeed = cd.droneRotationSpeed
         };
         
-        SetDroneSpawnDelay();
+        drone.health = cd.droneHealth;
+        
+        drone.onPlayerCollision += () => StartCoroutine(WaitingRoutine(drone));
+        drone.onDestroyed += () => drones.Remove(drone);
+        
+        drones.Add(drone);
+    }
+    
+    public void OnCrystalCollected()
+    {
+        crystalsHit += 1;
+        if (crystalsHit == cd.crystalAmount)
+            OnChallengeCompleted();
     }
 
-    private void SetDroneSpawnDelay()
+    private void OnChallengeCompleted()
     {
-        timeSinceLastDroneSpawn = 0;
-        droneSpawnDelay = Random.Range(droneSpawnMinDelay, droneSpawnMaxDelay);
+        while (drones.Count > 0)
+            drones.First().DestroyDrone();
+        
+        CompleteChallenge();
+    }
+
+    private IEnumerator WaitingRoutine(Drone drone)
+    {
+        waiting = true;
+        
+        foreach (var d in drones)
+            d.Freeze();
+        
+        drone.FireLaser(GetPlayerPosition());
+        
+        //Make sure the waiting time is longer than the time the laser is active
+        var laserActiveTime = cd.droneLaserActiveTime;
+        if (cd.waitingTime < laserActiveTime)
+            throw new Exception($"waitingTime can't be less than {laserActiveTime} seconds");
+        
+        yield return new WaitForSeconds(laserActiveTime);
+        
+        drone.HideLaser();
+
+        yield return new WaitForSeconds(cd.waitingTime - laserActiveTime);
+        
+        foreach (var d in drones)
+            d.Unfreeze();
+        
+        waiting = false;
     }
 }
