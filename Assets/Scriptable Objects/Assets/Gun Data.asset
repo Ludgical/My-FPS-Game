@@ -12,9 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58859dac7ad2134a8d94898398940d3, type: 3}
   m_Name: Gun Data
   m_EditorClassIdentifier: Assembly-CSharp::Scriptable_Objects.GunData
-  positionOffsetMultiplier: -0.2
-  rotationOffsetMultiplier: -1
-  positionOffsetSmoothTime: 0.05
-  rotationOffsetSpeed: 10
+  positionOffsetMultipliers:
+  - 0
+  - 0.06
+  - 0.2
+  rotationOffsetMultipliers:
+  - 0
+  - 0.9
+  - 1.2
+  positionOffsetSmoothTimes:
+  - 0
+  - 0.06
+  - 0.1
+  rotationOffsetSpeeds:
+  - 0
+  - 6
+  - 10
   cooldown: 0.1
   damage: 10
