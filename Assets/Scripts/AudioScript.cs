@@ -69,7 +69,8 @@ public class AudioScript : MonoBehaviour
     {
         //-80 db is silent
         //Divide by 50 instead of 100 to make louder sounds even louder
-        var volumeDecibels = Settings.Game.MasterVolume.Value == 0 ? -80 : Mathf.Log10(Settings.Game.MasterVolume.Value / 50) * 20;
+        var newVolume = Settings.Game.MasterVolume.Value;
+        var volumeDecibels = newVolume == 0 ? -80 : Mathf.Log10(newVolume / 50) * 20;
         audioMixer.SetFloat("Volume", volumeDecibels);
     }
 }

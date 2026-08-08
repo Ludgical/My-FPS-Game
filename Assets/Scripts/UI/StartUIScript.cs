@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
 
 public class StartUIScript : MonoBehaviour
 {
@@ -18,6 +17,7 @@ public class StartUIScript : MonoBehaviour
         refs = References.Refs;
 
         SetUpPlayButtons();
+        SetUpOnButtonPressed();
         
         //Show UI on game start and hide on game completed
         refs.gameLogic.onPlay += () => gameObject.SetActive(false);
@@ -27,19 +27,16 @@ public class StartUIScript : MonoBehaviour
     {
         timedButton.onClick.AddListener(() =>
         {
-            OnButtonPressed();
             refs.gameLogic.onPlay?.Invoke();
         });
         
         tutorialButton.onClick.AddListener(() =>
         {
-            OnButtonPressed();
             refs.gameLogic.onPlay?.Invoke();
         });
         
         quitButton.onClick.AddListener(() =>
         {
-            OnButtonPressed();
             StartCoroutine(QuitRoutine());
             return;
             
@@ -51,7 +48,13 @@ public class StartUIScript : MonoBehaviour
         });
     }
 
-    public void OnButtonPressed()
+    private void SetUpOnButtonPressed()
+    {
+        foreach (var button in GetComponentsInChildren<Button>())
+            button.onClick.AddListener(OnButtonPressed);
+    }
+
+    private void OnButtonPressed()
     {
         audioSource.PlayOneShot(buttonPressSound);
     }

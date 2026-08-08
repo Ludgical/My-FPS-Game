@@ -13,6 +13,7 @@ public class References : MonoBehaviour
     public Animator playerAnimator;
     public Camera camera;
     public GunScript gun;
+    public GunAnimation gunAnimation;
     public Transform delayedFollowPivot;
     public Transform gunPivot;
     public PlayerData playerData;

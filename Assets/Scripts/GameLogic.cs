@@ -20,6 +20,12 @@ public class GameLogic : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         
+        SetFPS();
+        Settings.Game.FPS.onUpdated += SetFPS;
+        
+        SetVSync();
+        Settings.Game.VSync.onUpdated += SetVSync;
+        
         onPlay += () =>
         {
             gameIsOn = true;
@@ -41,5 +47,18 @@ public class GameLogic : MonoBehaviour
             FirstTime = false;
             SceneManager.LoadScene("GameScene");
         }
+    }
+
+    private void SetFPS()
+    {
+        var newFPSStr = Settings.Game.FPS.Value;
+        var newFPS = newFPSStr == "Unlimited" ? -1 : int.Parse(newFPSStr);
+        Application.targetFrameRate = newFPS;
+    }
+    
+    private void SetVSync()
+    {
+        var vSyncCount = Settings.Game.VSync.Value ? 1 : 0;
+        QualitySettings.vSyncCount = vSyncCount;
     }
 }

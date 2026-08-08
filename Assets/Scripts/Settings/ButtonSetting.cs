@@ -17,7 +17,6 @@ public class ButtonSetting : Setting
         
         //When the button is pressed, call the OnSettingChanged method
         button.onClick.AddListener(OnSettingChanged);
-        button.onClick.AddListener(() => References.Refs.startUI.OnButtonPressed());
         
         Initialize(name, defaultValue ? 1 : 0);
     }
@@ -38,6 +37,6 @@ public class ButtonSetting : Setting
     protected override void SetText()
     {
         var settingName = Name.Split('.').Last();
-        valueText.text = settingName + ": " + (Value ? "ON" : "OFF");
+        valueText.text = $"{settingName}: {(Value ? "ON" : "OFF")}";
     }
 }

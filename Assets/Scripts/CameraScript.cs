@@ -16,9 +16,4 @@ public class CameraScript : MonoBehaviour
     {
         refs.camera.fieldOfView = Settings.Player.FOV.Value;
     }
-
-    private void ResetCamera()
-    {
-        refs.camera.transform.localRotation = Quaternion.identity;
-    }
 }
