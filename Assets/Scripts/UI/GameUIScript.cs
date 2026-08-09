@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +9,13 @@ public class GameUIScript : MonoBehaviour
     private References refs;
 
     [SerializeField] private GameObject crosshair;
+    [SerializeField] private GameObject timeDisplay;
+    [SerializeField] private TMP_Text titleText;
+    [SerializeField] private TMP_Text timeText;
     [SerializeField] private Image fadeImage;
+    [SerializeField] private Image startUIBlocker;
+    [SerializeField] private Button playAgainButton;
+    [SerializeField] private Button toMenuButton;
 
     private void Start()
     {
@@ -16,13 +24,38 @@ public class GameUIScript : MonoBehaviour
         SetUpFading();
         SetUpCrosshair();
 
-        if (!GameLogic.FirstTime)
+        if (!GameUtil.FirstTime)
         {
             //Fade the screen from black once the scene has reset
             //as long as it's not the first round this session
             fadeImage.color = Color.black;
             FadeFromBlack(0.2f, refs.gameData.fadeFromBlackDuration);
         }
+        
+        //Show the display if the player played timed in the last game, if not, hide it
+        if (!GameUtil.FirstTime && GameUtil.LastGameMode == GameMode.Timed)
+            ShowTimeDisplay(GameUtil.MissionTime, GameUtil.IsNewBestTime);
+        else
+            HideTimeDisplay();
+        
+        playAgainButton.onClick.AddListener(() =>
+        {
+            HideTimeDisplay();
+            
+            switch (GameUtil.LastGameMode)
+            {
+                case GameMode.Timed:
+                    refs.gameLogic.onPlayTimed?.Invoke();
+                    break;
+                case GameMode.Tutorial:
+                    refs.gameLogic.onPlayTutorial?.Invoke();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        });
+
+        toMenuButton.onClick.AddListener(HideTimeDisplay);
     }
 
     private void SetUpFading()
@@ -71,5 +104,21 @@ public class GameUIScript : MonoBehaviour
         //Set the alpha to the exact value it should be
         color.a = toBlack ? 1f : 0f;
         fadeImage.color = color;
+    }
+
+    private void ShowTimeDisplay(int time, bool newBest)
+    {
+        timeDisplay.SetActive(true);
+        titleText.text = newBest
+            ? "New Best Time!"
+            : "Mission Completed!";
+        timeText.text = time.ToString();
+        startUIBlocker.raycastTarget = true;
+    }
+
+    private void HideTimeDisplay()
+    {
+        timeDisplay.SetActive(false);
+        startUIBlocker.raycastTarget = false;
     }
 }

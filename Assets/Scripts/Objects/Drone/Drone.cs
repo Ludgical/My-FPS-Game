@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -17,6 +16,7 @@ public class Drone : MonoBehaviour, IHittable
     [SerializeField] private GameObject droneDestroyedParticles;
     [SerializeField] private Slider healthBar;
     [SerializeField] private Image healthBarColor;
+    [SerializeField] private Material laserMat;
     
     public Action onDestroyed;
     public Action onPlayerCollision;
@@ -151,19 +151,14 @@ public class Drone : MonoBehaviour, IHittable
     {
         //Create a cylinder that will go from the drone to the target position and
         //a sphere that will go at the end of the cylinder
-        laserCylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        laserSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         
-        foreach (var part in new []{laserCylinder, laserSphere})
-        {
-            Destroy(part.GetComponent<Collider>());
-            
-            //Set the color of the parts and make them transparent
-            var material = part.GetComponent<Renderer>().material;
-            material.color = new Color(1, 0.2f, 0.2f, 0.1f);
-            material.SetFloat("_Mode", 1); //Transparent
-            material.renderQueue = (int)RenderQueue.Transparent;
-        }
+        laserCylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        Destroy(laserCylinder.GetComponent<Collider>());
+        laserCylinder.GetComponent<Renderer>().material = laserMat;
+        
+        laserSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        Destroy(laserSphere.GetComponent<Collider>());
+        laserSphere.GetComponent<Renderer>().material = laserMat;
         
         HideLaser();
     }

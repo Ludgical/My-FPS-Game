@@ -4,8 +4,8 @@ public class GunAnimation : MonoBehaviour
 {
     private References refs;
     
-    private Transform gunPivot;
-    private Transform delayedFollowPivot;
+    [SerializeField] private Transform gunPivot;
+    [SerializeField] private Transform delayedFollowPivot;
     
     private Vector3 gunVelocity;
     private Vector3 oldPivotPosition;
@@ -19,9 +19,6 @@ public class GunAnimation : MonoBehaviour
     private void Start()
     {
         refs = References.Refs;
-        
-        gunPivot = refs.gunPivot;
-        delayedFollowPivot = refs.delayedFollowPivot;
         
         SetGunSwayLevel();
         Settings.Player.GunSway.onUpdated += SetGunSwayLevel;
@@ -87,7 +84,7 @@ public class GunAnimation : MonoBehaviour
         //Enable or disable the running animation if it's not already in the correct state
         if (showRunAnimation != runAnimationIsOn)
         {
-            refs.playerAnimator.SetBool("IsRunning", showRunAnimation);
+            refs.player.animator.SetBool("IsRunning", showRunAnimation);
             runAnimationIsOn = showRunAnimation;
         }
     }
@@ -95,6 +92,6 @@ public class GunAnimation : MonoBehaviour
     private void SetGunSwayLevel()
     {
         gunSwayLevel = Settings.Player.GunSway.ValueIndex;
-        refs.playerAnimator.SetInteger("GunSwayLevel", gunSwayLevel);
+        refs.player.animator.SetInteger("GunSwayLevel", gunSwayLevel);
     }
 }

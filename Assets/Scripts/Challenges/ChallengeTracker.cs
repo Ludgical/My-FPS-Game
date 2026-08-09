@@ -14,6 +14,6 @@ public class ChallengeTracker : MonoBehaviour
     {
         completedChallengeCount++;
         if (completedChallengeCount == challengeCount)
-            References.Refs.gameLogic.OnGameCompleted();
+            References.Refs.gameLogic.GameCompleted();
     }
 }

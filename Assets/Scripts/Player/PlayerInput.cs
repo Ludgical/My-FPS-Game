@@ -3,17 +3,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
-    private References refs;
+    [SerializeField] private GunScript gun;
     
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool JumpInput { get; private set; }
     public bool ShouldBeCrouched { get; private set; }
-
-    private void Start()
-    {
-        refs = References.Refs;
-    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -30,8 +25,8 @@ public class PlayerInput : MonoBehaviour
     public void OnShoot(InputAction.CallbackContext context)
     {
         //Fire when left click is pressed
-        if (context.performed && refs.gameLogic.gameIsOn)
-            refs.gun.TryFire();
+        if (context.performed)
+            gun.TryFire();
     }
 
     public void OnJump(InputAction.CallbackContext context)

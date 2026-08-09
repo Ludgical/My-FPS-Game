@@ -765,13 +765,12 @@ MonoBehaviour:
   audioSource: {fileID: 106465575074521755}
   laserSound: {fileID: 8300000, guid: c6b98ad45f07b2f46964ce366f212637, type: 3}
   onHitSound: {fileID: 8300000, guid: fba636ddc7d24fa4ab535ba273ab1bad, type: 3}
-  electricalSizzleSound: {fileID: 8300000, guid: 5f81dadefd9fb5146a2ed7143d3cc93e, type: 3}
   onDestroyedSound: {fileID: 8300000, guid: cc59fac6faa396846af641ca308f93e5, type: 3}
   animator: {fileID: 6435706677174338393}
   droneDestroyedParticles: {fileID: 8275072622398136481, guid: 923713501f3361a44baa13117f09c9f5, type: 3}
   healthBar: {fileID: 8153633893529137888}
   healthBarColor: {fileID: 4875755612075407187}
-  maxHealth: 0
+  laserMat: {fileID: 2100000, guid: 9dbc64e727f56a24e94d21d3dbfbce8a, type: 2}
   health: 0
   oneShot: 0
   damageable: 1

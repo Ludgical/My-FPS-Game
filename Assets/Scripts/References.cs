@@ -1,21 +1,18 @@
 using Scriptable_Objects;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class References : MonoBehaviour
 {
     public static References Refs;
     
     public GameLogic gameLogic;
-    public StartUIScript startUI;
+    public GameUtil gameUtil;
     public ChallengeTracker challengeTracker;
     public ChallengeGenerator challengeGenerator;
     public PlayerScript player;
-    public Animator playerAnimator;
     public Camera camera;
-    public GunScript gun;
-    public GunAnimation gunAnimation;
-    public Transform delayedFollowPivot;
-    public Transform gunPivot;
+    
     public PlayerData playerData;
     public GunData gunData;
     public GameData gameData;

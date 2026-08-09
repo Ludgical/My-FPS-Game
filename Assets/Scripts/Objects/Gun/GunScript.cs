@@ -9,6 +9,7 @@ public class GunScript : MonoBehaviour
     [SerializeField] private AudioClip gunFiringSound;
     [SerializeField] private MeshRenderer[] renderers;
     [SerializeField] private GameObject onHitParticles;
+    [SerializeField] private Transform gunPivot;
     
     private float timeSinceLastShot;
 
@@ -33,15 +34,15 @@ public class GunScript : MonoBehaviour
     private void SetZValue()
     {
         //Set the gun's z-value based on the player's fov
-        var gunPos = refs.gunPivot.localPosition;
+        var gunPos = gunPivot.localPosition;
         gunPos.z = Settings.Player.FOV.Value / -150 + 1.24f;
-        refs.gunPivot.localPosition = gunPos;
+        gunPivot.localPosition = gunPos;
     }
 
     public void TryFire()
     {
         //Can't fire if enough time hasn't passed since the last shot
-        if (timeSinceLastShot < refs.gunData.cooldown)
+        if (!refs.gameLogic.gameIsOn || timeSinceLastShot < refs.gunData.cooldown)
             return;
         timeSinceLastShot = 0;
         
@@ -51,7 +52,7 @@ public class GunScript : MonoBehaviour
     private void Fire()
     {
         audioSource.PlayOneShot(gunFiringSound);
-        refs.playerAnimator.SetTrigger("Fire");
+        refs.player.animator.SetTrigger("Fire");
 
         //Raycast forward from the camera, put everything it hit in an array and sort by distance
         var ray = new Ray(refs.camera.transform.position, refs.camera.transform.forward);

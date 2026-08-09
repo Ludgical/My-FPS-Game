@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using Button = UnityEngine.UI.Button;
 
@@ -9,15 +10,15 @@ public class StartUIScript : MonoBehaviour
     [SerializeField] private Button timedButton;
     [SerializeField] private Button tutorialButton;
     [SerializeField] private Button quitButton;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip buttonPressSound;
+    [SerializeField] private TMP_Text bestTimeText;
 
     private void Start()
     {
         refs = References.Refs;
 
         SetUpPlayButtons();
-        SetUpOnButtonPressed();
+        
+        SetBestTime(refs.gameLogic.GetBestTime());
         
         //Show UI on game start and hide on game completed
         refs.gameLogic.onPlay += () => gameObject.SetActive(false);
@@ -27,12 +28,12 @@ public class StartUIScript : MonoBehaviour
     {
         timedButton.onClick.AddListener(() =>
         {
-            refs.gameLogic.onPlay?.Invoke();
+            refs.gameLogic.onPlayTimed?.Invoke();
         });
         
         tutorialButton.onClick.AddListener(() =>
         {
-            refs.gameLogic.onPlay?.Invoke();
+            refs.gameLogic.onPlayTutorial?.Invoke();
         });
         
         quitButton.onClick.AddListener(() =>
@@ -42,20 +43,15 @@ public class StartUIScript : MonoBehaviour
             
             IEnumerator QuitRoutine()
             {
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.2f);
                 Application.Quit();
             }
         });
     }
 
-    private void SetUpOnButtonPressed()
+    private void SetBestTime(int time)
     {
-        foreach (var button in GetComponentsInChildren<Button>())
-            button.onClick.AddListener(OnButtonPressed);
-    }
-
-    private void OnButtonPressed()
-    {
-        audioSource.PlayOneShot(buttonPressSound);
+        if (time >= 0)
+            bestTimeText.text = $"Best Time: {time}";
     }
 }

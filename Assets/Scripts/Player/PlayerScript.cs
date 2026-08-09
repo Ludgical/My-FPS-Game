@@ -2,26 +2,21 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    private References refs;
-    
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private GunAnimation gunAnimation;
+    [SerializeField] public Animator animator;
 
     public bool IsOnGround { get; private set; }
     public bool IsCrouched { get; private set; }
-
-    private void Start()
-    {
-        refs = References.Refs;
-    }
 
     private void FixedUpdate()
     {
         //Check if the player is on the ground or not
         CheckIsOnGround();
         //Show the running animation if the player is running
-        refs.gunAnimation.SetRunAnimation(rb.linearVelocity);
+        gunAnimation.SetRunAnimation(rb.linearVelocity);
     }
     
     private void CheckIsOnGround()
