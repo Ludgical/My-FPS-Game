@@ -1,6 +1,5 @@
 using Scriptable_Objects;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class References : MonoBehaviour
 {
@@ -9,7 +8,6 @@ public class References : MonoBehaviour
     public GameLogic gameLogic;
     public GameUtil gameUtil;
     public ChallengeTracker challengeTracker;
-    public ChallengeGenerator challengeGenerator;
     public PlayerScript player;
     public Camera camera;
     
