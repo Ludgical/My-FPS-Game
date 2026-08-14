@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f58ed0f64174ecbb8b772623de2adb3, type: 3}
   m_Name: Crystal Challenge Data
   m_EditorClassIdentifier: Assembly-CSharp::Scriptable_Objects.CrystalChallengeData
+  crystalRotationPerSecond: 60
+  crystalBobDurationSeconds: 2.5
+  crystalBobHeightMultiplier: 0.2
   crystalAmount: 30
   outerRadius: 18
   innerRadius: 4
@@ -20,8 +23,9 @@ MonoBehaviour:
   droneHealth: 40
   droneSpawnMinDelay: 3
   droneSpawnMaxDelay: 4
-  droneSmoothTime: 0.7
+  droneVelocitySmoothTime: 0.3
   droneMaxSpeed: 10
-  droneRotationSpeed: 10
+  droneSpeedIncreasePerSecond: 1
+  droneRotationSpeed: 12
   droneLaserActiveTime: 1.2
   waitingTime: 3

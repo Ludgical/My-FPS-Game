@@ -31,10 +31,11 @@ public abstract class Challenge : MonoBehaviour
     // When something enters the trigger at the door
     private void OnTriggerEnter(Collider other)
     {
-        if (challengeStarted || !other.CompareTag("Player"))
+        if (challengeStarted || refs.challengeTracker.ChallengeActive || !other.CompareTag("Player"))
             return;
         
         StartChallenge();
+        refs.challengeTracker.StartChallenge();
         challengeStarted = true;
     }
     
@@ -60,7 +61,10 @@ public abstract class Challenge : MonoBehaviour
     public static Vector3 GetPlayerPosition()
     {
         var refs = References.Refs;
-        var offset = new Vector3(0, refs.playerData.colliderHeight - 2, 0);
+        var colliderHeight = refs.player.IsCrouched
+            ? refs.playerData.crouchedColliderHeight
+            : refs.playerData.colliderHeight;
+        var offset = new Vector3(0, colliderHeight * 0.7f, 0);
         return refs.player.transform.position + offset;
     }
 }

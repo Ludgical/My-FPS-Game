@@ -10,6 +10,7 @@ namespace Scriptable_Objects
         public float jumpStrength;
         public float gravityScale;
         public float colliderHeight;
+        public float crouchedColliderHeight => colliderHeight / 2;
         public float movementLerpStepGround;
         public float movementLerpStepAir;
         public float speedForRunAnimation;

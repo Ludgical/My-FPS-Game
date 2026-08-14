@@ -50,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         var colliderHeight = refs.playerData.colliderHeight;
+        var crouchedColliderHeight = refs.playerData.crouchedColliderHeight;
         
         if (input.ShouldBeCrouched)
             Crouch();
@@ -61,8 +62,8 @@ public class PlayerMovement : MonoBehaviour
         {
             player.SetIsCrouched(true);
 
-            collider.height = colliderHeight / 2;
-            collider.center = new Vector3(0, colliderHeight / 4, 0);
+            collider.height = crouchedColliderHeight;
+            collider.center = new Vector3(0, crouchedColliderHeight / 2, 0);
             
             if (crouchCoroutine != null)
                 StopCoroutine(crouchCoroutine);

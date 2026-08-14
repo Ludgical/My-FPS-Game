@@ -23,9 +23,10 @@ namespace Scriptable_Objects
         public float droneSpawnMinDelay;
         [Tooltip("Maximum amount of time between drones spawning")]
         public float droneSpawnMaxDelay;
-        [Tooltip("How quickly the drone should move")]
-        public float droneSmoothTime;
+        [Tooltip("How quickly the drone should reach the target velocity")]
+        public float droneVelocitySmoothTime;
         public float droneMaxSpeed;
+        public float droneSpeedIncreasePerSecond;
         public float droneRotationSpeed;
         public float droneLaserActiveTime;
         [Tooltip("How long the challenge should pause after the player gets hit by a drone")]

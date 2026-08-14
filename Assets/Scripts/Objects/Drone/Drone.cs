@@ -37,13 +37,12 @@ public class Drone : MonoBehaviour, IHittable
     {
         refs = References.Refs;
 
-        if (!oneShot)
+        if (!oneShot && damageable)
         {
             maxHealth = health;
             UpdateHealthBar();
         }
-        
-        if (oneShot)
+        else
         {
             HideHealthBar();
         }
@@ -61,10 +60,20 @@ public class Drone : MonoBehaviour, IHittable
         SetHealthBarRotation();
     }
     
-    public void Freeze()
+    public void Freeze(float freezeTime = -1)
     {
         isFrozen = true;
         pathfinding.Freeze();
+
+        if (freezeTime > 0)
+            StartCoroutine(UnfreezeRoutine());
+        return;
+        
+        IEnumerator UnfreezeRoutine()
+        {
+            yield return new WaitForSeconds(freezeTime);
+            Unfreeze();
+        }
     }
     public void Unfreeze()
     {
@@ -127,10 +136,12 @@ public class Drone : MonoBehaviour, IHittable
         {
             Destroy(GetComponent<Collider>());
             pathfinding.Freeze();
-            animator.SetTrigger("Destroy");
             HideHealthBar();
-            
             onDestroyed?.Invoke();
+
+            yield return new WaitForSeconds(Random.Range(0, 0.2f));
+            
+            animator.SetTrigger("Destroy");
             
             yield return new WaitForSeconds(0.2f);
             
@@ -163,7 +174,7 @@ public class Drone : MonoBehaviour, IHittable
         HideLaser();
     }
 
-    public void FireLaser(Vector3 target)
+    public void FireLaser(Vector3 target, float duration)
     {
         audioSource.PlayOneShot(laserSound);
         
@@ -181,9 +192,18 @@ public class Drone : MonoBehaviour, IHittable
         
         //Set the rotation of the cylinder
         laserCylinder.transform.up = direction;
+
+        StartCoroutine(HideLaserRoutine());
+        return;
+
+        IEnumerator HideLaserRoutine()
+        {
+            yield return new WaitForSeconds(duration);
+            HideLaser();
+        }
     }
 
-    public void HideLaser()
+    private void HideLaser()
     {
         laserCylinder.transform.localScale = Vector3.zero;
         laserSphere.transform.localScale = Vector3.zero;
@@ -195,27 +215,46 @@ public class Drone : MonoBehaviour, IHittable
             onPlayerCollision?.Invoke();
     }
     
-    public static Drone SpawnNew(Vector3 center)
+    /// <summary>
+    /// Spawn a new drone
+    /// </summary>
+    /// <param name="center">The center of the room</param>
+    /// <param name="spawnBehindWall"><br/>True: Spawn the drone behind one of the walls<br/>
+    /// False: Spawn the drone in the center of the room</param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public static Drone SpawnNew(Vector3 center, bool spawnBehindWall)
     {
         var refs = References.Refs;
-        
-        //Distance from the center of the room to behind a wall, where the drones should spawn
-        var distFromCenter = refs.gameData.CenterToWall + 1;
-        var randomPointOnSide = Random.Range(-distFromCenter, distFromCenter);
-        var y = Random.Range(refs.droneData.droneSpawnMinY, refs.droneData.droneSpawnMaxY);
 
-        //Choose a random side and spawn the drone at the random point on that side
-        var spawnPosition = Random.Range(0, 4) switch
+        Vector3 spawnPosition;
+        Quaternion spawnRotation;
+
+        if (spawnBehindWall)
         {
-            0 => new Vector3(center.x + randomPointOnSide, y, center.z + distFromCenter),
-            1 => new Vector3(center.x + randomPointOnSide, y, center.z - distFromCenter),
-            2 => new Vector3(center.x + distFromCenter, y, center.z + randomPointOnSide),
-            3 => new Vector3(center.x - distFromCenter, y, center.z + randomPointOnSide),
-            _ => throw new Exception("SpawnNew(): unable to spawn Drone")
-        };
+            //Distance from the center of the room to behind a wall, where the drones should spawn
+            var distFromCenter = refs.gameData.CenterToWall + 1;
+            var randomPointOnSide = Random.Range(-distFromCenter, distFromCenter);
+            var y = Random.Range(refs.droneData.droneSpawnMinY, refs.droneData.droneSpawnMaxY);
+
+            //Choose a random side and spawn the drone at the random point on that side
+            spawnPosition = Random.Range(0, 4) switch
+            {
+                0 => new Vector3(center.x + randomPointOnSide, y, center.z + distFromCenter),
+                1 => new Vector3(center.x + randomPointOnSide, y, center.z - distFromCenter),
+                2 => new Vector3(center.x + distFromCenter, y, center.z + randomPointOnSide),
+                3 => new Vector3(center.x - distFromCenter, y, center.z + randomPointOnSide),
+                _ => throw new Exception("SpawnNew(): unable to spawn Drone")
+            };
         
-        //Make the drone look at the center of the room
-        var spawnRotation = Quaternion.LookRotation(center - spawnPosition);
+            //Make the drone look at the center of the room
+            spawnRotation = Quaternion.LookRotation(center - spawnPosition);
+        }
+        else
+        {
+            spawnPosition = center;
+            spawnRotation = Quaternion.LookRotation(Challenge.GetPlayerPosition() - center);
+        }
 
         //Create the drone
         var drone = Instantiate(refs.droneData.dronePrefab, spawnPosition, spawnRotation);

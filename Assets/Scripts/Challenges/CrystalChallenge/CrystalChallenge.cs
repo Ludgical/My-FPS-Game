@@ -15,11 +15,9 @@ public class CrystalChallenge : Challenge
     private float droneSpawnDelay;
     private float timeSinceLastDroneSpawn;
     /// Waiting after the player got hit by a drone
-    public bool waiting;
+    [NonSerialized] public bool waiting;
 
     [SerializeField] private GameObject crystalPrefab;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip restartingSound;
     
     protected override void InitializeChallenge()
     {
@@ -84,12 +82,13 @@ public class CrystalChallenge : Challenge
 
     private void SpawnDrone()
     {
-        var drone = Drone.SpawnNew(center:transform.position);
+        var drone = Drone.SpawnNew(center:transform.position, spawnBehindWall:true);
         
         drone.pathfinding = new DronePathfindMethods.TowardsPlayer(drone)
         {
-            smoothTime = cd.droneSmoothTime,
+            velocitySmoothTime = cd.droneVelocitySmoothTime,
             maxSpeed = cd.droneMaxSpeed,
+            speedIncreasePerSecond = cd.droneSpeedIncreasePerSecond,
             rotationSpeed = cd.droneRotationSpeed
         };
         
@@ -123,18 +122,14 @@ public class CrystalChallenge : Challenge
         foreach (var d in drones)
             d.Freeze();
         
-        drone.FireLaser(GetPlayerPosition());
-        
         //Make sure the waiting time is longer than the time the laser is active
         var laserActiveTime = cd.droneLaserActiveTime;
         if (cd.waitingTime < laserActiveTime)
             throw new Exception($"waitingTime can't be less than {laserActiveTime} seconds");
         
-        yield return new WaitForSeconds(laserActiveTime);
-        
-        drone.HideLaser();
+        drone.FireLaser(GetPlayerPosition(), laserActiveTime);
 
-        yield return new WaitForSeconds(cd.waitingTime - laserActiveTime);
+        yield return new WaitForSeconds(cd.waitingTime);
         
         foreach (var d in drones)
             d.Unfreeze();

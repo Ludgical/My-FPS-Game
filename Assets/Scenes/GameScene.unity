@@ -4967,6 +4967,7 @@ MonoBehaviour:
   gameData: {fileID: 11400000, guid: 8f34d8606339aa649adfe80563796041, type: 2}
   droneData: {fileID: 11400000, guid: 7741dcac06f4b9746b4c03a65445f3cc, type: 2}
   crystalChallengeData: {fileID: 11400000, guid: 0b92bd0a8a487ac428b3e1deffb285bc, type: 2}
+  droneChallengeData: {fileID: 11400000, guid: 8e702af349008f94aafdb315d59bb9fc, type: 2}
 --- !u!4 &1302023023
 Transform:
   m_ObjectHideFlags: 0
@@ -6565,8 +6566,8 @@ MonoBehaviour:
   - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
   - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
   - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
-  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
-  - {fileID: 5554066784767017696, guid: 349ede371a7a0da4080c128c3903f11b, type: 3}
+  - {fileID: 1439486062227515093, guid: 444b20c819bbdb540805238b0429f98f, type: 3}
+  - {fileID: 1439486062227515093, guid: 444b20c819bbdb540805238b0429f98f, type: 3}
   - {fileID: 5554066784767017696, guid: 349ede371a7a0da4080c128c3903f11b, type: 3}
   - {fileID: 5554066784767017696, guid: 349ede371a7a0da4080c128c3903f11b, type: 3}
 --- !u!4 &1650499804
