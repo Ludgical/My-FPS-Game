@@ -110,7 +110,7 @@ public class GameUIScript : MonoBehaviour
     {
         timeDisplay.SetActive(true);
         titleText.text = newBest
-            ? "New Best Time!"
+            ? "New Best Score!"
             : "Mission Completed!";
         timeText.text = time.ToString();
         startUIBlocker.raycastTarget = true;

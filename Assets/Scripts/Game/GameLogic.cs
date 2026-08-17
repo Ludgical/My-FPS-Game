@@ -19,6 +19,8 @@ public class GameLogic : MonoBehaviour
     private void Start()
     {
         refs = References.Refs;
+        
+        PlayerPrefs.DeleteKey("BestTime");
 
         SetUpOnPlayTimed();
         SetUpOnPlayTutorial();
@@ -83,10 +85,10 @@ public class GameLogic : MonoBehaviour
     private void OnFinishedTimed()
     {
         var missionTime = (int)((Time.time - startTime) * 100);
-        var bestTime = GetBestTime();
-        var isNewBest = bestTime == -1 || missionTime < GetBestTime();
+        var bestTime = GetBestScore();
+        var isNewBest = bestTime == -1 || missionTime < GetBestScore();
         if (isNewBest)
-            SetBestTime(missionTime);
+            SetBestScore(missionTime);
         
         GameUtil.MissionTime = missionTime;
         GameUtil.IsNewBestTime = isNewBest;
@@ -98,13 +100,13 @@ public class GameLogic : MonoBehaviour
         GameUtil.LastGameMode = GameMode.Tutorial;
     }
     
-    public int GetBestTime()
+    public int GetBestScore()
     {
-        return PlayerPrefs.GetInt("BestTime", -1);
+        return PlayerPrefs.GetInt("BestScore", -1);
     }
 
-    private void SetBestTime(int time)
+    private void SetBestScore(int time)
     {
-        PlayerPrefs.SetInt("BestTime", time);
+        PlayerPrefs.SetInt("BestScore", time);
     }
 }

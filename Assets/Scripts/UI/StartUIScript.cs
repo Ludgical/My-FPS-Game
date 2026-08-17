@@ -18,7 +18,7 @@ public class StartUIScript : MonoBehaviour
 
         SetUpPlayButtons();
         
-        SetBestTime(refs.gameLogic.GetBestTime());
+        SetBestTime(refs.gameLogic.GetBestScore());
         
         //Show UI on game start and hide on game completed
         refs.gameLogic.onPlay += () => gameObject.SetActive(false);
@@ -52,6 +52,6 @@ public class StartUIScript : MonoBehaviour
     private void SetBestTime(int time)
     {
         if (time >= 0)
-            bestTimeText.text = $"Best Time: {time}";
+            bestTimeText.text = $"Best Score: {time}";
     }
 }

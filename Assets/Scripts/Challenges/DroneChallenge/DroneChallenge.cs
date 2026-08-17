@@ -52,7 +52,7 @@ public class DroneChallenge : Challenge
 
     private void SpawnDrone()
     {
-        var drone = Drone.SpawnNew(center:transform.position, spawnBehindWall:true);
+        var drone = Drone.SpawnNewBehindWall(roomCenter:transform.position);
 
         drone.pathfinding = new DronePathfindMethods.Circle(drone)
         {
@@ -75,9 +75,8 @@ public class DroneChallenge : Challenge
 
     private void SpawnChasingDrone()
     {
-        var drone = Drone.SpawnNew(
-            center:transform.position + new Vector3(0, cd.chasingDroneY, 0), 
-            spawnBehindWall:false);
+        var drone = Drone.SpawnNewAtPosition(
+            position:transform.position + new Vector3(0, cd.chasingDroneY, 0));
         
         drone.pathfinding = new DronePathfindMethods.TowardsPlayer(drone)
         {

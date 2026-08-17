@@ -19,6 +19,7 @@ public class Drone : MonoBehaviour, IHittable
     [SerializeField] private Material laserMat;
     
     public Action onDestroyed;
+    public Action onDestroyedByPlayer;
     public Action onPlayerCollision;
     
     private float maxHealth;
@@ -90,13 +91,13 @@ public class Drone : MonoBehaviour, IHittable
         {
             health -= refs.gunData.damage;
             if (health <= 0)
-                DestroyDrone();
+                PlayerDestroyDrone();
             else
                 UpdateHealthBar();
         }
         
         if (oneShot)
-            DestroyDrone();
+            PlayerDestroyDrone();
         
         audioSource.PlayOneShot(onHitSound);
     }
@@ -127,13 +128,22 @@ public class Drone : MonoBehaviour, IHittable
         healthBar.gameObject.SetActive(false);
     }
 
-    public void DestroyDrone()
+    private void PlayerDestroyDrone()
+    {
+        DestroyDrone();
+        onDestroyedByPlayer?.Invoke();
+    }
+
+    public void DestroyDrone(float waitTime = -1)
     {
         StartCoroutine(Routine());
         return;
 
         IEnumerator Routine()
         {
+            if (waitTime > 0)
+                yield return new WaitForSeconds(waitTime);
+            
             Destroy(GetComponent<Collider>());
             pathfinding.Freeze();
             HideHealthBar();
@@ -214,50 +224,41 @@ public class Drone : MonoBehaviour, IHittable
         if (!isFrozen && other.CompareTag("Player"))
             onPlayerCollision?.Invoke();
     }
+
+    public static Drone SpawnNewAtPosition(Vector3 position)
+    {
+        var rotation = Quaternion.LookRotation(Challenge.GetPlayerPosition() - position);
+        return SpawnNew(position, rotation);
+    }
     
-    /// <summary>
-    /// Spawn a new drone
-    /// </summary>
-    /// <param name="center">The center of the room</param>
-    /// <param name="spawnBehindWall"><br/>True: Spawn the drone behind one of the walls<br/>
-    /// False: Spawn the drone in the center of the room</param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public static Drone SpawnNew(Vector3 center, bool spawnBehindWall)
+    public static Drone SpawnNewBehindWall(Vector3 roomCenter)
     {
         var refs = References.Refs;
-
-        Vector3 spawnPosition;
-        Quaternion spawnRotation;
-
-        if (spawnBehindWall)
-        {
-            //Distance from the center of the room to behind a wall, where the drones should spawn
-            var distFromCenter = refs.gameData.CenterToWall + 1;
-            var randomPointOnSide = Random.Range(-distFromCenter, distFromCenter);
-            var y = Random.Range(refs.droneData.droneSpawnMinY, refs.droneData.droneSpawnMaxY);
-
-            //Choose a random side and spawn the drone at the random point on that side
-            spawnPosition = Random.Range(0, 4) switch
-            {
-                0 => new Vector3(center.x + randomPointOnSide, y, center.z + distFromCenter),
-                1 => new Vector3(center.x + randomPointOnSide, y, center.z - distFromCenter),
-                2 => new Vector3(center.x + distFromCenter, y, center.z + randomPointOnSide),
-                3 => new Vector3(center.x - distFromCenter, y, center.z + randomPointOnSide),
-                _ => throw new Exception("SpawnNew(): unable to spawn Drone")
-            };
         
-            //Make the drone look at the center of the room
-            spawnRotation = Quaternion.LookRotation(center - spawnPosition);
-        }
-        else
-        {
-            spawnPosition = center;
-            spawnRotation = Quaternion.LookRotation(Challenge.GetPlayerPosition() - center);
-        }
+        //Distance from the center of the room to behind a wall, where the drones should spawn
+        var distFromCenter = refs.gameData.CenterToWall + 1;
+        var randomPointOnSide = Random.Range(-distFromCenter, distFromCenter);
+        var y = Random.Range(refs.droneData.droneSpawnMinY, refs.droneData.droneSpawnMaxY);
 
-        //Create the drone
-        var drone = Instantiate(refs.droneData.dronePrefab, spawnPosition, spawnRotation);
+        //Choose a random side and spawn the drone at the random point on that side
+        var spawnPosition = Random.Range(0, 4) switch
+        {
+            0 => new Vector3(roomCenter.x + randomPointOnSide, y, roomCenter.z + distFromCenter),
+            1 => new Vector3(roomCenter.x + randomPointOnSide, y, roomCenter.z - distFromCenter),
+            2 => new Vector3(roomCenter.x + distFromCenter, y, roomCenter.z + randomPointOnSide),
+            3 => new Vector3(roomCenter.x - distFromCenter, y, roomCenter.z + randomPointOnSide),
+            _ => throw new Exception("Unable to spawn Drone")
+        };
+    
+        //Make the drone look at the center of the room
+        var spawnRotation = Quaternion.LookRotation(roomCenter - spawnPosition);
+        
+        return SpawnNew(spawnPosition, spawnRotation);
+    }
+
+    private static Drone SpawnNew(Vector3 position, Quaternion rotation)
+    {
+        var drone = Instantiate(References.Refs.droneData.dronePrefab, position, rotation);
         return drone.GetComponentInChildren<Drone>();
     }
 }

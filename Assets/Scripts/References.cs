@@ -17,6 +17,7 @@ public class References : MonoBehaviour
     public DroneData droneData;
     public CrystalChallengeData crystalChallengeData;
     public DroneChallengeData droneChallengeData;
+    public TargetChallengeData targetChallengeData;
 
     private void Awake()
     {

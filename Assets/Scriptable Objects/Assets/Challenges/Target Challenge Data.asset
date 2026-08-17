@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 285d865ed9de48b483eb2bdd5ae065a7, type: 3}
+  m_Name: Target Challenge Data
+  m_EditorClassIdentifier: Assembly-CSharp::Scriptable_Objects.TargetChallengeData
+  timeToGoToPlayerPos: 0.8
+  depthToSpawnDrone: 2
+  droneDistanceBehind: 5
+  droneMinY: 2.5
+  droneMaxY: 5.5
+  droneSpeed: 4
+  droneVelocitySmoothTime: 0.2
+  droneSpeedDecreasePerRestart: 1.5
+  droneLaserTime: 1
+  destroyDroneTime: 2
+  restartTime: 4
+  nextLevelTime: 1

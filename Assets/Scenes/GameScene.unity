@@ -448,6 +448,22 @@ PrefabInstance:
       propertyPath: isStartRoomDoor
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4205302356200105730, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: 'targets.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4205302356200105730, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: 'targets.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4205302356200105730, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: 'targets.Array.data[2]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4205302356200105730, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+      propertyPath: 'targets.Array.data[3]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6038751744987100229, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].time
       value: 0.17240828
@@ -493,7 +509,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7114171866822131634, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+    - {fileID: 8598845649316819214, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+    - {fileID: 5105277783182829964, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
+    - {fileID: 4444278498834733389, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe968e4e94f2e464abce356e814dd55d, type: 3}
@@ -3443,7 +3463,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Time:'
+  m_text: 'Score:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4967,6 +4987,7 @@ MonoBehaviour:
   droneData: {fileID: 11400000, guid: 7741dcac06f4b9746b4c03a65445f3cc, type: 2}
   crystalChallengeData: {fileID: 11400000, guid: 0b92bd0a8a487ac428b3e1deffb285bc, type: 2}
   droneChallengeData: {fileID: 11400000, guid: 8e702af349008f94aafdb315d59bb9fc, type: 2}
+  targetChallengeData: {fileID: 11400000, guid: 53c196608775bae46bcc799986b8131e, type: 2}
 --- !u!4 &1302023023
 Transform:
   m_ObjectHideFlags: 0
@@ -5039,7 +5060,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: No best time
+  m_text: No best score
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6597,10 +6618,10 @@ MonoBehaviour:
   challengePrefabs:
   - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
   - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
-  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
+  - {fileID: 7738328515788493629, guid: 875bdd16de5445f41a62e23e2af2185e, type: 3}
+  - {fileID: 7738328515788493629, guid: 875bdd16de5445f41a62e23e2af2185e, type: 3}
+  - {fileID: 7738328515788493629, guid: 875bdd16de5445f41a62e23e2af2185e, type: 3}
   - {fileID: 1439486062227515093, guid: 444b20c819bbdb540805238b0429f98f, type: 3}
-  - {fileID: 1439486062227515093, guid: 444b20c819bbdb540805238b0429f98f, type: 3}
-  - {fileID: 5554066784767017696, guid: 349ede371a7a0da4080c128c3903f11b, type: 3}
   - {fileID: 5554066784767017696, guid: 349ede371a7a0da4080c128c3903f11b, type: 3}
 --- !u!4 &1650499804
 Transform:

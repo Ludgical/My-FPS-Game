@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:Scriptable_Objects:DroneChallengeData/CrystalChallengeData
   dronesToDestroy: 10
   immediateDroneSpawnCount: 3
-  droneSpawnDelay: 2
+  droneSpawnDelay: 1.5
   maxDroneAmount: 6
   droneHealth: 60
   droneVelocitySmoothTime: 1

@@ -159,10 +159,12 @@ namespace Generators
                 var doorX = room.x + CenterToDoor * direction.x;
                 var doorZ = room.y + CenterToDoor * direction.y;
             
-                room.doors[direction] = Instantiate(
+                var door = Instantiate(
                     doorPrefab,
                     new Vector3(doorX, refs.gameData.wallY, doorZ),
                     Quaternion.Euler(0, rotation, 0));
+                door.GetComponent<DoorScript>().isChallengeRoomDoor = true;
+                room.doors[direction] = door;
             }
         }
     

@@ -10,11 +10,13 @@ public class DoorScript : MonoBehaviour
     
     [SerializeField] private GameObject doorLeft;
     [SerializeField] private GameObject doorRight;
-    [SerializeField] private TargetScript[] targets;
+    [SerializeField] private DoorTarget[] targets;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip doorOpenSound;
+    
     [SerializeField] public bool isStartRoomDoor;
     [SerializeField] public bool isTargetDoor;
+    public bool isChallengeRoomDoor;
 
     private Vector3 doorLeftStart;
     private Vector3 doorRightStart;
@@ -47,8 +49,11 @@ public class DoorScript : MonoBehaviour
         
         if (isTargetDoor)
             SetUpTargetDoor();
+        
+        if (isChallengeRoomDoor)
+            SetUpChallengeRoomDoor();
     }
-    
+
     private void SetUpStartRoomDoor()
     {
         refs.gameLogic.onPlay += () => OpenDoor(1.2f);
@@ -67,6 +72,27 @@ public class DoorScript : MonoBehaviour
             targets[i].transform.localPosition = availableTargetPositions[j];
             availableTargetPositions.RemoveAt(j);
         }
+
+        foreach (var target in targets)
+            target.onHit += () =>
+            {
+                //If the target is already hit or if the number on this target 
+                //is not 1 more than the number on the previously hit target, return
+                if (target.isHit || target.number != lastHitTargetNumber + 1)
+                    return;
+
+                lastHitTargetNumber++;
+                if (lastHitTargetNumber == 4)
+                    OpenDoor();
+
+                target.TurnOffTarget();
+            };
+    }
+
+    private void SetUpChallengeRoomDoor()
+    {
+        foreach (var target in targets)
+            Destroy(target.gameObject);
     }
 
     public void OpenDoor(float waitTime = 0)

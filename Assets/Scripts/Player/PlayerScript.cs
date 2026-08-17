@@ -28,4 +28,14 @@ public class PlayerScript : MonoBehaviour
     {
         IsCrouched = crouched;
     }
+
+    public void FreezeMovement()
+    {
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    public void UnfreezeMovement()
+    {
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+    }
 }

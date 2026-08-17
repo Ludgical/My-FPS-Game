@@ -82,7 +82,7 @@ public class CrystalChallenge : Challenge
 
     private void SpawnDrone()
     {
-        var drone = Drone.SpawnNew(center:transform.position, spawnBehindWall:true);
+        var drone = Drone.SpawnNewBehindWall(roomCenter:transform.position);
         
         drone.pathfinding = new DronePathfindMethods.TowardsPlayer(drone)
         {
