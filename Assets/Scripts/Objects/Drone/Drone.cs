@@ -225,10 +225,10 @@ public class Drone : MonoBehaviour, IHittable
             onPlayerCollision?.Invoke();
     }
 
-    public static Drone SpawnNewAtPosition(Vector3 position)
+    public static Drone SpawnNewAtPosition(Vector3 position, Quaternion? rotation = null)
     {
-        var rotation = Quaternion.LookRotation(Challenge.GetPlayerPosition() - position);
-        return SpawnNew(position, rotation);
+        rotation ??= Quaternion.LookRotation(Challenge.GetPlayerPosition() - position);
+        return SpawnNew(position, (Quaternion)rotation);
     }
     
     public static Drone SpawnNewBehindWall(Vector3 roomCenter)

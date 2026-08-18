@@ -73,19 +73,14 @@ public class GunAnimation : MonoBehaviour
             Time.deltaTime * refs.gunData.rotationOffsetSpeeds[gunSwayLevel]);
     }
 
-    public void SetRunAnimation(Vector3 velocity)
+    public void SetRunAnimation()
     {
-        //The speed at which the player is moving
-        var speed = new Vector2(velocity.x, velocity.z).magnitude;
-        //The running animation can be enabled if the player
-        //is moving quick enough and is on the ground
-        var quickEnough = speed > refs.playerData.speedForRunAnimation;
-        var showRunAnimation = quickEnough && refs.player.IsOnGround;
         //Enable or disable the running animation if it's not already in the correct state
-        if (showRunAnimation != runAnimationIsOn)
+        var isRunning = refs.player.IsRunning;
+        if (isRunning != runAnimationIsOn)
         {
-            refs.player.animator.SetBool("IsRunning", showRunAnimation);
-            runAnimationIsOn = showRunAnimation;
+            refs.player.animator.SetBool("IsRunning", isRunning);
+            runAnimationIsOn = isRunning;
         }
     }
 

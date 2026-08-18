@@ -8,15 +8,18 @@ public class PlayerMovement : MonoBehaviour
     private PlayerScript player;
     [SerializeField] private PlayerInput input;
     [SerializeField] private CapsuleCollider collider;
+    [SerializeField] private Transform uncrouchCheck;
     [SerializeField] public Rigidbody rb;
     
     private Coroutine crouchCoroutine;
     private float cameraYVelocity;
+    private int uncrouchMask;
     
     private void Start()
     {
         refs = References.Refs;
         player = refs.player;
+        uncrouchMask = ~LayerMask.GetMask("Player", "Ground");
     }
     
     private void FixedUpdate()
@@ -45,25 +48,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void CrouchOrStandUp()
     {
+        if (!player.canCrouch)
+        {
+            if (player.IsCrouched)
+                StandUp();
+            return;
+        }
+        
         //If the player's crouch state is already correct, return
         if (input.ShouldBeCrouched == player.IsCrouched)
             return;
-
-        var colliderHeight = refs.playerData.colliderHeight;
-        var crouchedColliderHeight = refs.playerData.crouchedColliderHeight;
         
         if (input.ShouldBeCrouched)
             Crouch();
-        else
+        else if (CanUncrouch())
             StandUp();
+
         return;
 
         void Crouch()
         {
             player.SetIsCrouched(true);
 
-            collider.height = crouchedColliderHeight;
-            collider.center = new Vector3(0, crouchedColliderHeight / 2, 0);
+            collider.height = refs.playerData.crouchedColliderHeight;
+            collider.center = new Vector3(0, refs.playerData.crouchedColliderHeight / 2, 0);
             
             if (crouchCoroutine != null)
                 StopCoroutine(crouchCoroutine);
@@ -73,8 +81,8 @@ public class PlayerMovement : MonoBehaviour
         {
             player.SetIsCrouched(false);
             
-            collider.height = colliderHeight;
-            collider.center = new Vector3(0, colliderHeight / 2, 0);
+            collider.height = refs.playerData.colliderHeight;
+            collider.center = new Vector3(0, refs.playerData.colliderHeight / 2, 0);
             
             if (crouchCoroutine != null)
                 StopCoroutine(crouchCoroutine);
@@ -90,7 +98,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 //Move the camera closer to its goal position and wait for the next frame
                 var camPosition = camTransform.localPosition;
-                camPosition.y = Mathf.SmoothDamp(camPosition.y, targetHeight, ref cameraYVelocity, refs.playerData.crouchAnimationDampTime);
+                camPosition.y = Mathf.SmoothDamp(
+                    camPosition.y, targetHeight, 
+                    ref cameraYVelocity, refs.playerData.crouchAnimationDampTime);
                 camTransform.localPosition = camPosition;
                 yield return null;
             }
@@ -102,15 +112,34 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private bool CanUncrouch()
+    {
+        //Check a capsule that's as big as the player's hitbox
+        //Ignore the player, ground and triggers
+        var offset = new Vector3(0, refs.playerData.colliderHeight / 2, 0);
+        return !Physics.CheckCapsule(
+            uncrouchCheck.position + offset,
+            uncrouchCheck.position - offset,
+            refs.playerData.colliderRadius / 2,
+            uncrouchMask,
+            QueryTriggerInteraction.Ignore);
+    }
+
     private void Move()
     {
         //Get a movement vector from the direction the player is facing and the move input
-        var movement = transform.forward * input.MoveInput.y + transform.right * input.MoveInput.x;
+        var movement = 
+            transform.forward * input.MoveInput.y + 
+            transform.right * input.MoveInput.x;
         
         //Change the max move speed based on if the player is crouched or not
-        var maxMoveSpeed = player.IsCrouched ? refs.playerData.maxCrouchSpeed : refs.playerData.maxRunSpeed;
+        var maxMoveSpeed = player.IsCrouched
+            ? refs.playerData.maxCrouchSpeed
+            : refs.playerData.maxRunSpeed;
         //Change the acceleration speed based on if the player is in the air or not
-        var movementLerpStep = player.IsOnGround ? refs.playerData.movementLerpStepGround : refs.playerData.movementLerpStepAir;
+        var movementLerpStep = player.IsOnGround
+            ? refs.playerData.movementLerpStepGround
+            : refs.playerData.movementLerpStepAir;
         
         //Use lerp functions to keep accelerating until a max speed
         var newXVelocity = Mathf.Lerp(
@@ -123,7 +152,9 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(newZVelocity) < 0.001f) newZVelocity = 0;
         
         //Upwards velocity (jumping)
-        var newYVelocity = input.JumpInput && player.IsOnGround ? refs.playerData.jumpStrength : rb.linearVelocity.y;
+        var newYVelocity = input.JumpInput && player.IsOnGround
+            ? refs.playerData.jumpStrength
+            : rb.linearVelocity.y;
 
         //Apply the velocity to the rigidbody of the player
         rb.linearVelocity = new Vector3(newXVelocity, newYVelocity, newZVelocity);

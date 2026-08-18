@@ -17,9 +17,11 @@ MonoBehaviour:
   jumpStrength: 25
   gravityScale: 8
   colliderHeight: 6
+  colliderRadius: 1.2
   movementLerpStepGround: 0.2
   movementLerpStepAir: 0.04
-  speedForRunAnimation: 9
+  speedForRunning: 6
   standHeight: 5
   crouchHeight: 2
   crouchAnimationDampTime: 0.07
+  footstepSoundDelay: 0.3

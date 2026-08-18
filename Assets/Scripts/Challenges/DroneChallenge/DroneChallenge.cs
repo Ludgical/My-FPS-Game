@@ -23,6 +23,8 @@ public class DroneChallenge : Challenge
         
         dronesToDestroy = cd.dronesToDestroy;
         
+        SpawnChasingDrone();
+        
         drones = new List<Drone>();
     }
 
@@ -31,7 +33,7 @@ public class DroneChallenge : Challenge
         for (var i = 0; i < cd.immediateDroneSpawnCount; i++)
             SpawnDrone();
         
-        SpawnChasingDrone();
+        chasingDrone.Unfreeze();
         
         canvas.SetActive(true);
     }
@@ -76,7 +78,8 @@ public class DroneChallenge : Challenge
     private void SpawnChasingDrone()
     {
         var drone = Drone.SpawnNewAtPosition(
-            position:transform.position + new Vector3(0, cd.chasingDroneY, 0));
+            position:transform.position + new Vector3(0, cd.chasingDroneY, 0),
+            rotation:Quaternion.Euler(0, transform.eulerAngles.y + 180, 0));
         
         drone.pathfinding = new DronePathfindMethods.TowardsPlayer(drone)
         {
@@ -88,6 +91,8 @@ public class DroneChallenge : Challenge
         drone.damageable = false;
 
         drone.onPlayerCollision += () => OnChasingDroneHitPlayer(drone);
+        
+        drone.Freeze();
         
         chasingDrone = drone;
     }

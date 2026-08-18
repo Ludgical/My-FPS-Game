@@ -11,11 +11,13 @@ namespace Scriptable_Objects
         public float gravityScale;
         public float colliderHeight;
         public float crouchedColliderHeight => colliderHeight / 2;
+        public float colliderRadius;
         public float movementLerpStepGround;
         public float movementLerpStepAir;
-        public float speedForRunAnimation;
+        public float speedForRunning;
         public float standHeight;
         public float crouchHeight;
         public float crouchAnimationDampTime;
+        public float footstepSoundDelay;
     }
 }
