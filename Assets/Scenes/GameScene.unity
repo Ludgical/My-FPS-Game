@@ -369,8 +369,8 @@ GameObject:
   - component: {fileID: 138940353}
   - component: {fileID: 138940352}
   m_Layer: 5
-  m_Name: StartUIBlocker
-  m_TagString: Untagged
+  m_Name: ScreenImage
+  m_TagString: ScreenImage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3325,6 +3325,7 @@ MonoBehaviour:
   gunFiringSound: {fileID: 8300000, guid: 669dd1ea56bb49d4ba0f049125477d43, type: 3}
   renderers: []
   onHitParticles: {fileID: 1898804856549485517, guid: 8428003d163674841a3db7c16e66a3a6, type: 3}
+  hitWallSound: {fileID: 8300000, guid: f612884632893164b9bf4a927c245833, type: 3}
   gunPivot: {fileID: 1728244672}
 --- !u!82 &923736001
 AudioSource:
@@ -5011,6 +5012,7 @@ MonoBehaviour:
   gameUtil: {fileID: 640991688}
   challengeTracker: {fileID: 2128519083}
   player: {fileID: 1736651616}
+  gun: {fileID: 923736000}
   camera: {fileID: 198663629}
   playerData: {fileID: 11400000, guid: 75639d879b18fba4e85191332406cb01, type: 2}
   gunData: {fileID: 11400000, guid: cbc94dee812f5e040b84e711cba0e15d, type: 2}
@@ -5019,6 +5021,7 @@ MonoBehaviour:
   crystalChallengeData: {fileID: 11400000, guid: 0b92bd0a8a487ac428b3e1deffb285bc, type: 2}
   droneChallengeData: {fileID: 11400000, guid: 8e702af349008f94aafdb315d59bb9fc, type: 2}
   targetChallengeData: {fileID: 11400000, guid: 53c196608775bae46bcc799986b8131e, type: 2}
+  relayNodeChallengeData: {fileID: 11400000, guid: 78c581030e390a84783765ae963a7451, type: 2}
 --- !u!4 &1302023023
 Transform:
   m_ObjectHideFlags: 0
@@ -5787,7 +5790,7 @@ GameObject:
   - component: {fileID: 1530815975}
   m_Layer: 3
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6667,10 +6670,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   challengePrefabs:
-  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
-  - {fileID: 9214737076107771871, guid: 3f93dbbd252b7ce4185abbc02e9e26b0, type: 3}
-  - {fileID: 7738328515788493629, guid: 875bdd16de5445f41a62e23e2af2185e, type: 3}
-  - {fileID: 7738328515788493629, guid: 875bdd16de5445f41a62e23e2af2185e, type: 3}
+  - {fileID: 5087032216351254606, guid: 5d845cb0564f786448ed488b2d8e48cb, type: 3}
+  - {fileID: 5087032216351254606, guid: 5d845cb0564f786448ed488b2d8e48cb, type: 3}
+  - {fileID: 5087032216351254606, guid: 5d845cb0564f786448ed488b2d8e48cb, type: 3}
+  - {fileID: 5087032216351254606, guid: 5d845cb0564f786448ed488b2d8e48cb, type: 3}
   - {fileID: 7738328515788493629, guid: 875bdd16de5445f41a62e23e2af2185e, type: 3}
   - {fileID: 1439486062227515093, guid: 444b20c819bbdb540805238b0429f98f, type: 3}
   - {fileID: 5554066784767017696, guid: 349ede371a7a0da4080c128c3903f11b, type: 3}

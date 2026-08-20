@@ -9,6 +9,7 @@ public class References : MonoBehaviour
     public GameUtil gameUtil;
     public ChallengeTracker challengeTracker;
     public PlayerScript player;
+    public GunScript gun;
     public Camera camera;
     
     public PlayerData playerData;
@@ -18,6 +19,7 @@ public class References : MonoBehaviour
     public CrystalChallengeData crystalChallengeData;
     public DroneChallengeData droneChallengeData;
     public TargetChallengeData targetChallengeData;
+    public RelayNodeChallengeData relayNodeChallengeData;
 
     private void Awake()
     {

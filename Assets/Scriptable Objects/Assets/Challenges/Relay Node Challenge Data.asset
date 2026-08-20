@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49aa29f3c9444657aa72a385f68dc15d, type: 3}
+  m_Name: Relay Node Challenge Data
+  m_EditorClassIdentifier: Assembly-CSharp::Scriptable_Objects.RelayNodeChallengeData
+  nodeAmount: 20
+  radius: 9
+  minY: 3
+  maxY: 7
+  nodeMinDistance: 0.5
+  waitTime: 2
+  maxTimeBetweenHits: 0.3
+  timeBetweenHitsIncrease: 0.15
+  fadeOutSpeed: 8
+  fadeScreenImageTime: 0.25

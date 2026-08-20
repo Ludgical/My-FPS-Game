@@ -9,9 +9,12 @@ public class GunScript : MonoBehaviour
     [SerializeField] private AudioClip gunFiringSound;
     [SerializeField] private MeshRenderer[] renderers;
     [SerializeField] private GameObject onHitParticles;
+    [SerializeField] private AudioClip hitWallSound;
     [SerializeField] private Transform gunPivot;
     
     private float timeSinceLastShot;
+
+    public Action onFire;
 
     private void Start()
     {
@@ -73,15 +76,21 @@ public class GunScript : MonoBehaviour
                 continue;
             }
             
-            OnHitParticles(hit.point, hit.normal);
+            OnHitParticles(hit.point, hit.normal, hit.collider.tag);
             break;
         }
+        
+        onFire?.Invoke();
     }
 
-    private void OnHitParticles(Vector3 position, Vector3 rotation)
+    private void OnHitParticles(Vector3 position, Vector3 rotation, string hitTag)
     {
         //Create the particle object and destroy it after 0.5 seconds
-        Destroy(Instantiate(onHitParticles, position, Quaternion.LookRotation(rotation)), 0.5f);
+        var particles = Instantiate(onHitParticles, position, Quaternion.LookRotation(rotation));
+        Destroy(particles, 0.5f);
+        
+        if (hitTag is "Wall" or "Ground")
+            particles.GetComponent<AudioSource>().PlayOneShot(hitWallSound);
     }
 
     private void SetVisible(bool visible)
