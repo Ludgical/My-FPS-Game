@@ -8,11 +8,20 @@ public class SmoothScrollRect : ScrollRect
     private float expectedY = 1;
     private float targetY = 1;
     private float menuVelocity;
+    private float scrollMultiplier = -1;
 
     public override void OnScroll(PointerEventData eventData)
     {
+        if (scrollMultiplier < 0)
+        {
+            var totalHeight = GetComponentInChildren<VerticalLayoutGroup>()
+                .gameObject.GetComponent<RectTransform>().rect.height;
+            var viewHeight = GetComponent<RectTransform>().rect.height;
+            scrollMultiplier = scrollSensitivity / (totalHeight - viewHeight);
+        }
+
         //When using the scroll wheel, move the target position of the menu
-        targetY += eventData.scrollDelta.y * 0.01f * scrollSensitivity;
+        targetY += eventData.scrollDelta.y * scrollMultiplier;
         targetY = Mathf.Clamp01(targetY);
         scrolled = true;
     }

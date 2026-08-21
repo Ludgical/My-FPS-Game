@@ -8,19 +8,29 @@ public class AudioScript : MonoBehaviour
     
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource backgroundMusicSource;
+
+    private SliderSetting[] volumeCategories;
     
     private Coroutine changeVolumeRoutine;
     
     private void Start()
     {
         refs = References.Refs;
+
+        volumeCategories = new[]
+        {
+            Settings.Volume.MasterVolume,
+            Settings.Volume.MusicVolume,
+            Settings.Volume.GameVolume,
+            Settings.Volume.PlayerVolume,
+            Settings.Volume.DroneVolume,
+            Settings.Volume.OtherVolume
+        };
         
         StartMusic();
-        SetMixerVolume();
+        SetMixerVolumes();
         
         refs.gameLogic.onPlay += StopMusic;
-
-        Settings.Game.MasterVolume.onUpdated += SetMixerVolume;
     }
 
     private void StartMusic()
@@ -65,12 +75,23 @@ public class AudioScript : MonoBehaviour
             backgroundMusicSource.Stop();
     }
 
-    private void SetMixerVolume()
+    private void SetMixerVolumes()
+    {
+        foreach (var category in volumeCategories)
+        {
+            SetMixerVolume(category);
+            category.onUpdated += () =>
+                SetMixerVolume(category);
+        }
+    }
+    
+    private void SetMixerVolume(SliderSetting setting)
     {
         //-80 db is silent
         //Divide by 50 instead of 100 to make louder sounds even louder
-        var newVolume = Settings.Game.MasterVolume.Value;
+        var newVolume = setting.Value;
         var volumeDecibels = newVolume == 0 ? -80 : Mathf.Log10(newVolume / 50) * 20;
-        audioMixer.SetFloat("Volume", volumeDecibels);
+        var settingName = setting.Name.Split(".")[1];
+        audioMixer.SetFloat($"{settingName}Volume", volumeDecibels);
     }
 }

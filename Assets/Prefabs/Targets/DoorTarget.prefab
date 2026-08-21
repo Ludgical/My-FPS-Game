@@ -104,7 +104,7 @@ AudioSource:
   m_GameObject: {fileID: 8496915631668416143}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 2a7d233e379fbbb4baf2cb3ce89586e3, type: 2}
+  OutputAudioMixerGroup: {fileID: 3754452507517839865, guid: 2a7d233e379fbbb4baf2cb3ce89586e3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -240,5 +240,6 @@ MonoBehaviour:
   targetHitSound: {fileID: 8300000, guid: e839eb2ebc67cf44f9c31af10b9376e9, type: 3}
   redOffMat: {fileID: 2100000, guid: 38b0ab53d5f0db54bae17f953df7825f, type: 2}
   whiteOffMat: {fileID: 2100000, guid: 2c86d8010fb646a4fa52ae109732e244, type: 2}
+  isOn: 0
   isHit: 0
   number: 0

@@ -66,6 +66,7 @@ MonoBehaviour:
   doorOpenSound: {fileID: 8300000, guid: 116d73ce85f7ce94aad923f76a311375, type: 3}
   isStartRoomDoor: 0
   isTargetDoor: 0
+  isChallengeRoomDoor: 0
 --- !u!82 &6038751744987100229
 AudioSource:
   m_ObjectHideFlags: 0
@@ -75,7 +76,7 @@ AudioSource:
   m_GameObject: {fileID: 4086305607910606547}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 2a7d233e379fbbb4baf2cb3ce89586e3, type: 2}
+  OutputAudioMixerGroup: {fileID: 1657623563997776304, guid: 2a7d233e379fbbb4baf2cb3ce89586e3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1

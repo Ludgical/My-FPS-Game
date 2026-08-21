@@ -18,7 +18,7 @@ MonoBehaviour:
   maxY: 7
   nodeMinDistance: 0.5
   waitTime: 2
-  maxTimeBetweenHits: 0.3
-  timeBetweenHitsIncrease: 0.15
+  maxTimeBetweenHits: 0.5
+  timeBetweenHitsIncrease: 0.1
   fadeOutSpeed: 8
   fadeScreenImageTime: 0.25
